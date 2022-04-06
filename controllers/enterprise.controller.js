@@ -27,7 +27,7 @@ Update = (values, ID) => {
 List = () => {
   return new Promise(async (resolve, reject) => {
     try {
-      const sql = `SELECT e.id, e.enterprise_name
+      const sql = `SELECT *
                      FROM Enterprise e
                      WHERE e.deleted_at IS NULL`;
       const result = await con.query(sql, []);
