@@ -29,7 +29,7 @@ List = () => {
     try {
       const sql = `SELECT *
                      FROM Enterprise e
-                     WHERE e.deleted_at IS NULL`;
+                     `;
       const result = await con.query(sql, []);
       resolve(result);
     } catch (e) {
@@ -43,7 +43,7 @@ GetByID = (ID) => {
     try {
       const sql = ` SELECT e.id, e.enterprise_name
                       FROM Enterprise e
-                      WHERE e.id=? AND e.deleted_at IS NULL `;
+                      WHERE e.id=? `;
       const result = await con.query(sql, [ID]);
       resolve(result[0]);
     } catch (e) {
@@ -55,7 +55,7 @@ GetByID = (ID) => {
 Delete = (ID) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const sql = "UPDATE Enterprise SET deleted_at=NOW() WHERE id=?";
+      const sql = "DELETE FROM Enterprise WHERE id=?";
       const result = await con.query(sql, [ID]);
       resolve(result);
     } catch (e) {

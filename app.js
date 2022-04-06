@@ -6,8 +6,32 @@ const db = require("./models"); // import db from models/index.js
 const app = express();
 
 // Import Route
-const enterprise = require('./routes/enterprise/enterprise');
+const enterprise = require("./routes/enterprise/enterprise");
+
+// Import Swagger
+const swaggerUI = require("swagger-ui-express");
+const swaggerJsdoc = require("swagger-jsdoc");
+const options = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "Library API",
+      version: "1.0.0",
+      describtion: "Web Me-Group Enterprise API",
+    },
+    servers: [
+      {
+        url: "http://localhost:8000",
+      },
+    ],
+  },
+  apis: ["./routes/enterprise/enterprise.js"],
+};
+
+const specs = swaggerJsdoc(options);
+
 //Setting
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
 app.use(cookieParser());
 app.use(bodyParser.json({ limit: "50mb", extended: true }));
 app.use(
@@ -42,8 +66,6 @@ app.use(async (req, res, next) => {
 app.get("/", function (req, res) {
   res.status(200).json("Welcome to MY API");
 });
-app.use("/", [
-    enterprise
-]);
+app.use("/", [enterprise]);
 
 module.exports = app;

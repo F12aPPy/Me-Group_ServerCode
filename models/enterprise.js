@@ -1,22 +1,22 @@
 
 module.exports = (sequelize, DataTypes) => {
   let Enterprise = sequelize.define("Enterprise", {
-    createAt: {
-      type: "TIMESTAMP",
-      allowNull: false,
-      field: "created_at",
-    },
-    updatedAt: {
-      type: "TIMESTAMP",
-      defaultValue: sequelize.fn("NOW"),
-      allowNull: false,
-      field: "updated_at",
-    },
-    deletedAt: {
-      type: "TIMESTAMP",
-      allowNull: true,
-      field: "deleted_at",
-    },
+    // createAt: {
+    //   type: "TIMESTAMP",
+    //   allowNull: false,
+    //   field: "created_at",
+    // },
+    // updatedAt: {
+    //   type: "TIMESTAMP",
+    //   defaultValue: sequelize.fn("NOW"),
+    //   allowNull: false,
+    //   field: "updated_at",
+    // },
+    // deletedAt: {
+    //   type: "TIMESTAMP",
+    //   allowNull: true,
+    //   field: "deleted_at",
+    // },
     enterprise_name: {
         type: DataTypes.STRING(50),
         allowNull: false,
