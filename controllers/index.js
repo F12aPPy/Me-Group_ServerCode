@@ -1,4 +1,7 @@
-const enterprises = require('./enterprise.controller');
+const enterprises = require('./enterprise/enterprise.controller');
+const employees = require('./employee/employee.controller');
+const services = require('./services/service.controller');
+const goals = require('./goal/goal.controller')
 
 
 module.exports = {
@@ -9,4 +12,25 @@ module.exports = {
         GetbyID: enterprises.GetByID,
         Delete: enterprises.Delete
     },
+    employees: {
+        Insert: employees.Insert,
+        Update: employees.Update,
+        List: employees.List,
+        GetbyID: employees.GetByID,
+        Delete: employees.Delete
+    },
+    services: {
+        Insert: services.Insert,
+        Update: services.Update,
+        List: services.List,
+        GetbyID: services.GetByID,
+        Delete: services.Delete
+    },
+    goals: {
+        Insert: goals.Insert,
+        Update: goals.Update,
+        List: goals.List,
+        GetbyID: goals.GetByID,
+        Delete: goals.Delete
+    }
 };

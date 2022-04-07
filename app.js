@@ -7,6 +7,9 @@ const app = express();
 
 // Import Route
 const enterprise = require("./routes/enterprise/enterprise");
+const employee = require("./routes/employee/employee");
+const goal = require('./routes/goal/goal');
+const service = require('./routes/service/service');
 
 // Import Swagger
 const swaggerUI = require("swagger-ui-express");
@@ -25,7 +28,10 @@ const options = {
       },
     ],
   },
-  apis: ["./routes/enterprise/enterprise.js"],
+  apis: ["./routes/enterprise/enterprise.js",
+         "./routes/employee/employee.js",
+         "./routes/service/service.js",
+         "./routes/goal/goal.js"],
 };
 
 const specs = swaggerJsdoc(options);
@@ -66,6 +72,6 @@ app.use(async (req, res, next) => {
 app.get("/", function (req, res) {
   res.status(200).json("Welcome to MY API");
 });
-app.use("/", [enterprise]);
+app.use("/", [enterprise, employee, goal, service]);
 
 module.exports = app;

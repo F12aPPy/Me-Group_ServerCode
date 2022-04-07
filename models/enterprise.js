@@ -1,22 +1,23 @@
 
 module.exports = (sequelize, DataTypes) => {
   let Enterprise = sequelize.define("Enterprise", {
-    // createAt: {
-    //   type: "TIMESTAMP",
-    //   allowNull: false,
-    //   field: "created_at",
-    // },
-    // updatedAt: {
-    //   type: "TIMESTAMP",
-    //   defaultValue: sequelize.fn("NOW"),
-    //   allowNull: false,
-    //   field: "updated_at",
-    // },
-    // deletedAt: {
-    //   type: "TIMESTAMP",
-    //   allowNull: true,
-    //   field: "deleted_at",
-    // },
+    createdAt: {
+      type: "TIMESTAMP",
+      defaultValue: sequelize.fn('NOW'),
+      allowNull: false,
+      field: "created_at",
+    },
+    updatedAt: {
+      type: 'TIMESTAMP',
+        defaultValue: sequelize.fn('NOW'),
+        allowNull: false,
+        field: 'updated_at'
+    },
+    deletedAt: {
+      type: 'TIMESTAMP',
+        allowNull: true,
+        field: 'deleted_at'
+    },
     enterprise_name: {
         type: DataTypes.STRING(50),
         allowNull: false,
@@ -40,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {tableName: 'Enterprise'});
 
   let Employee = sequelize.define("Employee", {
-    createAt: {
+    createdAt: {
       type: "TIMESTAMP",
       allowNull: false,
       field: "created_at",
@@ -54,6 +55,7 @@ module.exports = (sequelize, DataTypes) => {
     deletedAt: {
       type: "TIMESTAMP",
       allowNull: true,
+      timestamps: false,
       field: "deleted_at",
     },
     employee_name: {
@@ -83,7 +85,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {tableName: 'Employee'});
 
   let Service = sequelize.define("Service", {
-    createAt: {
+    createdAt: {
       type: "TIMESTAMP",
       allowNull: false,
       field: "created_at",
@@ -114,7 +116,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {tableName: 'Service'});
 
   let Goal = sequelize.define("Goal", {
-    createAt: {
+    createdAt: {
       type: "TIMESTAMP",
       allowNull: false,
       field: "created_at",

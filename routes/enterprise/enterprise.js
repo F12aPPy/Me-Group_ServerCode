@@ -48,13 +48,10 @@ const controllers = require("../../controllers/index");
  *                type: string
  *                describtion: Address Enterprise
  *          example:
- *              id: 1
- *              createAt: 2022-04-06 14:36:05
- *              updateAt: 2022-04-06 14:36:05
- *              deleteAt: nul
- *              entreprise_name: Anfa&friend
- *              entreprise_detail: A Drug Sore in Korat
- *              entreprise_phone: 0933207404
+ *              deleted_at: null
+ *              enterprise_name: Anfa&friend
+ *              enterprise_detail: A Drug Sore in Korat
+ *              enterprise_phone: "0933207404"
  *              enterprise_nametax: makawan thojan
  *              enterprise_address: 88/33 sanambin.road kalasin city 46000
  *
@@ -83,6 +80,28 @@ const controllers = require("../../controllers/index");
  *                          items:
  *                              $ref: '#/components/schemas/Enterprise'
  */
+
+/**
+ * @swagger
+ * /enterprises:
+ *  post:
+ *      summary: Create a new Enterprise
+ *      tags: [Enterprise]
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      $ref: '#/components/schemas/Enterprise'
+ *      responses:
+ *          200:
+ *              describtion: The Enterprise was successfully create
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Enterprise'
+ */
+
 router
   .route("/enterprises")
   .get(async (req, res, next) => {
