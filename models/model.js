@@ -144,6 +144,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TEXT,
       allowNull: false,
     },
+    service_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    }
   }, {tableName: 'Goal'});  
 
   return {

@@ -28,7 +28,8 @@ List = () => {
   return new Promise(async (resolve, reject) => {
     try {
       const sql = `SELECT *
-                     FROM Goal g
+                     FROM Goal g left join Service s on
+                     g.service_id = s.id
                      WHERE g.deleted_at IS NULL`;
       const result = await con.query(sql, []);
       resolve(result);
