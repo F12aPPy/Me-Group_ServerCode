@@ -41,7 +41,7 @@ List = () => {
 GetByID = (ID) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const sql = ` SELECT s.id, s.service_name
+      const sql = ` SELECT *
                       FROM Service s
                       WHERE s.id=? `;
       const result = await con.query(sql, [ID]);
