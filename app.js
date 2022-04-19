@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const fileUpload = require("express-fileupload");
 const db = require("./models"); // import db from models/index.js
 const app = express();
+const path = require('path');
 
 // Import Route
 const enterprise = require("./routes/enterprise/enterprise");
@@ -75,5 +76,7 @@ app.get("/", function (req, res) {
   res.status(200).json("Welcome to MY API");
 });
 app.use("/", [enterprise, employee, goal, service]);
+app.use('/static', express.static(path.join(__dirname,'.','public','photo')))
+
 
 module.exports = app;
