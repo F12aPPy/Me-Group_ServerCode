@@ -144,6 +144,30 @@ const controllers = require("../../controllers/index");
  *              description: The Service was not found
  */
 
+/**
+ * @swagger
+ * /services/{id}:
+ *  get:
+ *      summary: Get the service by id
+ *      tags: [Services]
+ *      parameters:
+ *          - in: path
+ *            name: id
+ *            schema:
+ *              type: string
+ *            required: true
+ *            description: The Service id
+ *      responses:
+ *          200:
+ *              description: The Service was Update
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/Service'
+ *          404:
+ *              description: The Service was not found
+ */
+
 router
   .route("/services")
   .get(async (req, res, next) => {
