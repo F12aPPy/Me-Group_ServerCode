@@ -4,8 +4,6 @@ const router = express.Router();
 const http = require("../../config/http");
 const controllers = require("../../controllers/index");
 
-
-
 /**
  * @swagger
  * components:
@@ -175,34 +173,49 @@ router
     }
   });
 
-router.route("/services/:id")
-    .put(async (req, res, next) => {
-        try {
-            const ID = req.params.id;
-            const result = await controllers.services.Update(req.body, ID);
-            if (result.affectedRows > 0) {
-            http.response(res, 200, true, "Update successful");
-            } else {
-            http.response(res, 204, false, "No Content, no data in entity");
-            }
-        } catch (e) {
-            console.log(e);
-            http.response(res, 500, false, "Internal server error");
-        }
-        })
-    .delete(async (req, res, next) => {
-            try {
-                const ID = req.params.id
-                const result = await controllers.services.Delete(ID);
-                if (result.affectedRows > 0) {
-                    http.response(res, 200, true, 'Deleted successful')
-                } else {
-                    http.response(res, 400, false, 'Bad request, unable to query deleted')
-                }
-            } catch (e) {
-                console.log(e);
-                http.response(res, 500, false, 'Internal server error')
-            }
-        });
+router
+  .route("/services/:id")
+  .put(async (req, res, next) => {
+    try {
+      const ID = req.params.id;
+      const result = await controllers.services.Update(req.body, ID);
+      if (result.affectedRows > 0) {
+        http.response(res, 200, true, "Update successful");
+      } else {
+        http.response(res, 204, false, "No Content, no data in entity");
+      }
+    } catch (e) {
+      console.log(e);
+      http.response(res, 500, false, "Internal server error");
+    }
+  })
+  .delete(async (req, res, next) => {
+    try {
+      const ID = req.params.id;
+      const result = await controllers.services.Delete(ID);
+      if (result.affectedRows > 0) {
+        http.response(res, 200, true, "Deleted successful");
+      } else {
+        http.response(res, 400, false, "Bad request, unable to query deleted");
+      }
+    } catch (e) {
+      console.log(e);
+      http.response(res, 500, false, "Internal server error");
+    }
+  })
+  .get(async (req, res, next) => {
+    try {
+      const ID = req.params.id;
+      const result = await controllers.services.GetbyID(ID);
+      if (result) {
+        http.response(res, 200, true, "Get successful", result);
+      } else {
+        http.response(res, 204, false, "No Content, no data in entity");
+      }
+    } catch (e) {
+      console.log(e);
+      http.response(res, 500, false, "Internal server error");
+    }
+  });
 
 module.exports = router;
