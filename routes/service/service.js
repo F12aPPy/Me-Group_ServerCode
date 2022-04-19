@@ -42,9 +42,8 @@ const controllers = require("../../controllers/index");
  *                type: string
  *                describtion: Image service
  *          example:
- *              deleted_at: null
  *              service_name: ขายยริการ
- *              serviece_detail: มีการขายยริการให้เบือกสรรหลายเบอร์
+ *              service_detail: มีการขายยริการให้เบือกสรรหลายเบอร์
  *              service_img: asd
  *
  */

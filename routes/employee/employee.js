@@ -49,12 +49,11 @@ const controllers = require("../../controllers/index");
  *                type: string
  *                describtion: Address employee
  *          example:
- *              deleted_at: null
- *              employee_name: makawan thojan
- *              employee_detail: นักศึกษาฝึกงาน
- *              facebook: makawan thojan
- *              instargram: makawan thojan
- *              github: http://github.com/anfamakawan
+ *              employee_first_name: makawan thojan
+ *              employee_last_name: นักศึกษาฝึกงาน
+ *              mbti_id: 1
+ *              emp_contract: makawan thojan
+ *              emp_class: เด็กล้างจาน
  *              image: abc
  *
  */

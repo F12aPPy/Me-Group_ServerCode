@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const cors = require('cors');
 const cookieParser = require("cookie-parser");
 const fileUpload = require("express-fileupload");
 const db = require("./models"); // import db from models/index.js
@@ -37,6 +38,7 @@ const options = {
 const specs = swaggerJsdoc(options);
 
 //Setting
+app.use(cors());
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
 app.use(cookieParser());
 app.use(bodyParser.json({ limit: "50mb", extended: true }));

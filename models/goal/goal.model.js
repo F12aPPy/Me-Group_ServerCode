@@ -1,5 +1,12 @@
+
+
 module.exports = (sequelize, DataTypes) => {
     let Goal = sequelize.define("Goal", {
+        goal_id: {
+          type: DataTypes.INTEGER,
+          autoIncrement: true,
+          primaryKey: true,
+        },
         createdAt: {
           type: "TIMESTAMP",
           allowNull: false,

@@ -42,10 +42,10 @@ const controllers = require("../../controllers/index");
  *                type: text
  *                describtion: Image service
  *          example:
- *              deleted_at: null
  *              goal_title: บริการขายยริการอันดับ 1
  *              goal_detail: ได้รับรางวัลการบริการอันดับ 1 กับร้านใกล้เคียงในโคราช
  *              goal_img: asd
+ *              service_id: 1
  *
  */
 

@@ -16,25 +16,25 @@ module.exports = (sequelize, DataTypes) => {
           allowNull: true,
           field: "deleted_at",
         },
-        employee_name: {
+        employee_first_name: {
           type: DataTypes.STRING(50),
           allowNull: false,
         },
-        employee_detail: {
-          type: DataTypes.STRING(255),
+        employee_last_name: {
+          type: DataTypes.STRING(50),
           allowNull: false,
         },
-        facebook: {
-          type: DataTypes.STRING(255),
+        mbti_id: {
+          type: DataTypes.INTEGER,
           allowNull: true,
         },
-        instargram: {
+        emp_class: {
           type: DataTypes.STRING(255),
           allowNull: false,
         },
-        github: {
+        emp_contract: {
           type: DataTypes.STRING(255),
-          allowNull: false,
+          allowNull: true,
         },
         image: {
           type: DataTypes.TEXT,

@@ -48,7 +48,6 @@ const controllers = require("../../controllers/index");
  *                type: string
  *                describtion: Address Enterprise
  *          example:
- *              deleted_at: null
  *              enterprise_name: Anfa&friend
  *              enterprise_detail: A Drug Sore in Korat
  *              enterprise_phone: "0933207404"
