@@ -32,6 +32,10 @@ module.exports = (sequelize, DataTypes) => {
           type: DataTypes.STRING(255),
           allowNull: false,
         },
+        emp_quote: {
+          type: DataTypes.TEXT,
+          allowNull: false,
+        },
         emp_contract: {
           type: DataTypes.STRING(255),
           allowNull: true,

@@ -3,7 +3,7 @@ const con = require("../../config/db");
 Insert = (values) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const sql = "INSERT INTO Enterprise SET ?";
+      const sql = "INSERT INTO ContractUs SET ?";
       const result = await con.query(sql, [values]);
       resolve(result);
     } catch (e) {
@@ -15,7 +15,7 @@ Insert = (values) => {
 Update = (values, ID) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const sql = "UPDATE Enterprise SET ? WHERE id=?";
+      const sql = "UPDATE ContractUs SET ? WHERE id=?";
       const result = await con.query(sql, [values, ID]);
       resolve(result);
     } catch (e) {
@@ -28,8 +28,8 @@ List = () => {
   return new Promise(async (resolve, reject) => {
     try {
       const sql = `SELECT *
-                     FROM Enterprise e
-                     WHERE e.deleted_at IS NULL`;
+                     FROM ContractUs c
+                     WHERE c.deleted_at IS NULL`;
       const result = await con.query(sql, []);
       resolve(result);
     } catch (e) {
@@ -41,9 +41,9 @@ List = () => {
 GetByID = (ID) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const sql = ` SELECT e.id, e.enterprise_name
-                      FROM Enterprise e
-                      WHERE e.id=? `;
+      const sql = ` SELECT c.id, c.enterprise_name
+                      FROM ContractUs c
+                      WHERE c.id=? `;
       const result = await con.query(sql, [ID]);
       resolve(result[0]);
     } catch (e) {
@@ -55,7 +55,7 @@ GetByID = (ID) => {
 Delete = (ID) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const sql = "UPDATE Enterprise SET deleted_at=NOW() WHERE id=?";
+      const sql = "UPDATE ContractUs SET deleted_at=NOW() WHERE id=?";
       const result = await con.query(sql, [ID]);
       resolve(result);
     } catch (e) {

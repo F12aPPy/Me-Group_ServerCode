@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    let Enterprise = sequelize.define("Enterprise", {
+    let ContractUs = sequelize.define("ContractUs", {
         createdAt: {
           type: "TIMESTAMP",
           defaultValue: sequelize.fn('NOW'),
@@ -17,27 +17,27 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: true,
             field: 'deleted_at'
         },
-        enterprise_name: {
-            type: DataTypes.STRING(50),
-            allowNull: false,
-        },
-        enterprise_detail: {
-            type: DataTypes.STRING(255),
-            allowNull: false,
-        },
         enterprise_phone: {
             type: DataTypes.STRING(20),
+            allowNull: false,
+        },
+        enterprise_address: {
+            type: DataTypes.TEXT,
+            allowNull: false,
+        },
+        enterprise_servicetime: {
+            type: DataTypes.TEXT,
             allowNull: false,
         },
         enterprise_nametax: {
             type: DataTypes.STRING(50),
             allowNull: false,
         },
-        enterprise_address: {
+        enterprise_facebook: {
             type: DataTypes.STRING(255),
             allowNull: false,
         },
-      }, {tableName: 'Enterprise'});
+      }, {tableName: 'ContractUs'});
 
-    return Enterprise
+    return ContractUs
 };
