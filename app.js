@@ -8,10 +8,12 @@ const app = express();
 const path = require('path');
 
 // Import Route
-const enterprise = require("./routes/enterprise/enterprise");
+const aboutUs = require("./routes/aboutUs/aboutUs");
 const employee = require("./routes/employee/employee");
 const goal = require('./routes/goal/goal');
 const service = require('./routes/service/service');
+const contractUs = require('./routes/contractUs/contract_us');
+const user_admin = require('./routes/user_admin/user_admin');
 
 // Import Swagger
 const swaggerUI = require("swagger-ui-express");
@@ -30,7 +32,7 @@ const options = {
       },
     ],
   },
-  apis: ["./routes/enterprise/enterprise.js",
+  apis: ["./routes/aboutUs/aboutUs.js",
          "./routes/employee/employee.js",
          "./routes/service/service.js",
          "./routes/goal/goal.js"],
@@ -75,7 +77,7 @@ app.use(async (req, res, next) => {
 app.get("/", function (req, res) {
   res.status(200).json("Welcome to MY API");
 });
-app.use("/", [enterprise, employee, goal, service]);
+app.use("/", [aboutUs, employee, goal, service, contractUs, user_admin]);
 app.use('/static', express.static(path.join(__dirname,'.','public','photo')))
 
 

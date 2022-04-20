@@ -3,6 +3,7 @@ const employees = require('./employee/employee.controller');
 const services = require('./services/service.controller');
 const goals = require('./goal/goal.controller');
 const ContractUs = require('./contractUs/contract_us.controller');
+const user_admin = require('./user_admin/user_admin.controller');
 
 
 module.exports = {
@@ -40,5 +41,12 @@ module.exports = {
         List: ContractUs.List,
         GetByID: ContractUs.GetByID,
         Delete: ContractUs.Delete
+    },
+    user_admin: {
+        Insert: user_admin.Insert,
+        Update: user_admin.Update,
+        List: user_admin.List,
+        GetByID: user_admin.GetByID,
+        Delete: user_admin.Delete
     },
 };
