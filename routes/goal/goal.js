@@ -205,6 +205,21 @@ router.route("/goals/:id")
                 console.log(e);
                 http.response(res, 500, false, 'Internal server error')
             }
+        })
+      .get(async (req, res, next) => {
+          try {
+            const ID = req.params.id;
+            const result = await controllers.goals.GetbyID(ID);
+            if (result) {
+              http.response(res, 200, true, "Get successful", result);
+            } else {
+              http.response(res, 204, false, "No Content, no data in entity");
+            }
+          } catch (e) {
+            console.log(e);
+            http.response(res, 500, false, "Internal server error");
+          }
         });
+        console.log('ทำไมไม่มา');
 
 module.exports = router;
