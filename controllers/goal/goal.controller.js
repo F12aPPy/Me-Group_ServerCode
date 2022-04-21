@@ -43,8 +43,9 @@ GetByID = (ID) => {
   return new Promise(async (resolve, reject) => {
     try {
       const sql = ` SELECT *
-                      FROM Goal g
-                      WHERE g.goal_id=? `;
+                      FROM Goal g left join Service s on
+                      g.service_id = s.id
+                      WHERE g.goal_id=?, g.delected_at IS NULL `;
       const result = await con.query(sql, [ID]);
       resolve(result[0]);
     } catch (e) {
