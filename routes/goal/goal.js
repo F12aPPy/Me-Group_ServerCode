@@ -220,6 +220,6 @@ router.route("/goals/:id")
             http.response(res, 500, false, "Internal server error");
           }
         });
-        console.log('ทำไมไม่มา');
+        
 
 module.exports = router;
