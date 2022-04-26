@@ -9,11 +9,12 @@ const server = http.createServer(app);
 const db = require('./models');
 
 //Setting
+global.__basedir = __dirname
 
 // เรียกใช้งาน Index router
 
 //listen on server
-db.sequelize.sync({ alter: true }).then(() => { // ตั้ง alter เป็น true ก็ต่อเมื่อต้องการ update database
+// db.sequelize.sync({ alter: true }).then(() => { // ตั้ง alter เป็น true ก็ต่อเมื่อต้องการ update database
 server.listen(PORT, () => {
   console.log("==============================");
   console.log();
@@ -21,4 +22,4 @@ server.listen(PORT, () => {
   console.log();
   console.log("==============================");
 });
-});
+// });

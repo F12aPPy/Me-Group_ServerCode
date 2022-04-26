@@ -18,15 +18,15 @@ module.exports = (sequelize, DataTypes) => {
         },
         service_name: {
           type: DataTypes.STRING(255),
-          allowNull: false,
+          // allowNull: false,
         },
         service_detail: {
           type: DataTypes.TEXT,
-          allowNull: false
+          // allowNull: false
         },
         service_img: {
           type: DataTypes.TEXT,
-          allowNull: false,
+          // allowNull: false,
         },
       }, {tableName: 'Service'});
 

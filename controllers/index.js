@@ -26,7 +26,8 @@ module.exports = {
         Update: services.Update,
         List: services.List,
         GetbyID: services.GetByID,
-        Delete: services.Delete
+        Delete: services.Delete,
+        UploadFile: services.uploadFile
     },
     goals: {
         Insert: goals.Insert,

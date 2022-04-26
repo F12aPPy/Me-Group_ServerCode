@@ -3,6 +3,8 @@ const router = express.Router();
 // const bcrypt = require('bcrypt');
 const http = require("../../config/http");
 const controllers = require("../../controllers/index");
+const upload = require("../../middlewares/uploadImg");
+const fs = require('fs');
 
 /**
  * @swagger
@@ -185,7 +187,27 @@ router
   })
   .post(async (req, res, next) => {
     try {
-      const Creating = await controllers.services.Insert(req.body);
+      console.log(req.body);
+      if (req.files.service_img) {
+        console.log(req.files.service_img);
+        fs.writeFile("../../public/photo/services/" + req.files.service_img.name, req.files.service_img.data, (err) => {
+          
+          console.log('file has been upload')
+        })
+      }
+      const name = req.body.service_name;
+      const detail = req.body.service_detail;
+      const img = req.files.service_img.name;
+      // const img = req.body.service_img;
+      console.log(`name is ${name}`);
+      console.log(`detail is ${detail}`);
+      console.log(`image name : ${img}`);
+      const data = {
+        service_name: name,
+        service_detail: detail,
+        service_img: img,
+      }
+      const Creating = await controllers.services.UploadFile(data);
       if (Creating) {
         http.response(res, 201, true, "Created successful");
       } else {
@@ -196,6 +218,10 @@ router
       http.response(res, 500, false, "Internal Server Error");
     }
   });
+
+router.post("/services/post", upload.single("file"), async (req, res, next) => {
+  controllers.services.UploadFile(req.body);
+});
 
 router
   .route("/services/:id")

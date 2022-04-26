@@ -15,6 +15,9 @@ const service = require('./routes/service/service');
 const contractUs = require('./routes/contractUs/contract_us');
 const user_admin = require('./routes/user_admin/user_admin');
 
+// middleware
+const upload = require('./middlewares/uploadImg');
+
 // Import Swagger
 const swaggerUI = require("swagger-ui-express");
 const swaggerJsdoc = require("swagger-jsdoc");
