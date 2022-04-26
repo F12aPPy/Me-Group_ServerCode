@@ -187,14 +187,22 @@ router
   })
   .post(async (req, res, next) => {
     try {
-      console.log(req.body);
-      if (req.files.service_img) {
-        console.log(req.files.service_img);
-        fs.writeFile("../../public/photo/services/" + req.files.service_img.name, req.files.service_img.data, (err) => {
-          
-          console.log('file has been upload')
-        })
+      
+      if (!req.files | Object.keys(req.files) === 0) {
+        return http.response(res, 400, false, "No file were uploaded.")
       }
+
+      sampleFile = req.files.service_img;
+      uploadPath = __basedir + "\/public\/photo\/services\/" + sampleFile.name;
+
+      sampleFile.mv(uploadPath, function (err) {
+        if(err) {
+          http.response(res, 500, false, err)
+        } else {
+          console.log("File Was Uploaded")
+        }
+      })
+
       const name = req.body.service_name;
       const detail = req.body.service_detail;
       const img = req.files.service_img.name;
@@ -207,7 +215,7 @@ router
         service_detail: detail,
         service_img: img,
       }
-      const Creating = await controllers.services.UploadFile(data);
+      const Creating = await controllers.services.Insert(data);
       if (Creating) {
         http.response(res, 201, true, "Created successful");
       } else {
@@ -218,10 +226,6 @@ router
       http.response(res, 500, false, "Internal Server Error");
     }
   });
-
-router.post("/services/post", upload.single("file"), async (req, res, next) => {
-  controllers.services.UploadFile(req.body);
-});
 
 router
   .route("/services/:id")

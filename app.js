@@ -6,6 +6,7 @@ const fileUpload = require("express-fileupload");
 const db = require("./models"); // import db from models/index.js
 const app = express();
 const path = require('path');
+global.__basedir = __dirname
 
 // Import Route
 const aboutUs = require("./routes/aboutUs/aboutUs");

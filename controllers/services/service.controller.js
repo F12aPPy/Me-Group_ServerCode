@@ -1,41 +1,13 @@
 const con = require("../../config/db");
-const fs = require('fs');
-
-const db = require('../../models/index');
-const Service = db.Services;
 
 
-uploadFile = (values) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      console.log(values);
-  
-      if (values.file == undefined) {
-        console.log('dont have file')
-      }
-  
-      Service.create({
-        service_name: values.service_name,
-        service_detail: values.service_detail,
-        service_img: values.service_img,
-      })
-      resolve(true);
-  
-    }catch(error) {
-      console.log(error);
-      reject(error);
-    }
-  })
-}
+
 
 Insert = (values) => {
-  console.log('service controller')
-  console.log(values);
   return new Promise(async (resolve, reject) => {
     try {
       const sql = "INSERT INTO Service SET ?";
       const result = await con.query(sql, [values]);
-      console.log(result);
       resolve(result);
     } catch (e) {
       reject(e);
@@ -101,5 +73,4 @@ module.exports = {
     List,
     GetByID,
     Delete,
-    uploadFile
 };

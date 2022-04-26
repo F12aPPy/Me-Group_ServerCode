@@ -9,7 +9,6 @@ const server = http.createServer(app);
 const db = require('./models');
 
 //Setting
-global.__basedir = __dirname
 
 // เรียกใช้งาน Index router
 
