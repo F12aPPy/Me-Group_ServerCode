@@ -4,7 +4,7 @@ const router = express.Router();
 const http = require("../../config/http");
 const controllers = require("../../controllers/index");
 const upload = require("../../middlewares/uploadImg");
-const fs = require('fs');
+const fs = require("fs");
 
 /**
  * @swagger
@@ -187,21 +187,22 @@ router
   })
   .post(async (req, res, next) => {
     try {
-      
-      if (!req.files | Object.keys(req.files) === 0) {
-        return http.response(res, 400, false, "No file were uploaded.")
+
+      //save image 
+      if (!req.files | (Object.keys(req.files) === 0)) {
+        return http.response(res, 400, false, "No file were uploaded.");
+      } else {
+        sampleFile = req.files.service_img;
+        uploadPath = __basedir + "/public/photo/services/" + sampleFile.name;
+
+        sampleFile.mv(uploadPath, function (err) {
+          if (err) {
+            http.response(res, 500, false, err);
+          } else {
+            console.log("File Was Uploaded");
+          }
+        });
       }
-
-      sampleFile = req.files.service_img;
-      uploadPath = __basedir + "\/public\/photo\/services\/" + sampleFile.name;
-
-      sampleFile.mv(uploadPath, function (err) {
-        if(err) {
-          http.response(res, 500, false, err)
-        } else {
-          console.log("File Was Uploaded")
-        }
-      })
 
       const name = req.body.service_name;
       const detail = req.body.service_detail;
@@ -214,7 +215,7 @@ router
         service_name: name,
         service_detail: detail,
         service_img: img,
-      }
+      };
       const Creating = await controllers.services.Insert(data);
       if (Creating) {
         http.response(res, 201, true, "Created successful");

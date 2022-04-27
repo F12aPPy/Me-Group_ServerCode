@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
             field: 'deleted_at'
         },
         enterprise_phone: {
-            type: DataTypes.STRING(20),
+            type: DataTypes.STRING(255),
             allowNull: false,
         },
         enterprise_address: {
@@ -33,9 +33,17 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(50),
             allowNull: false,
         },
+        enterprise_email: {
+          type: DataTypes.STRING(255),
+          allowNull: false,
+        },
         enterprise_facebook: {
             type: DataTypes.STRING(255),
             allowNull: false,
+        },
+        enterprise_latitude_longtitude: {
+          type: DataTypes.TEXT,
+          allowNull: false,
         },
       }, {tableName: 'ContractUs'});
 

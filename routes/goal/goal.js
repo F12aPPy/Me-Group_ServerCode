@@ -165,6 +165,23 @@ router
   })
   .post(async (req, res, next) => {
     try {
+
+      //save image 
+      if (!req.files | (Object.keys(req.files) === 0)) {
+        return http.response(res, 400, false, "No file were uploaded.");
+      } else {
+        sampleFile = req.files.service_img;
+        uploadPath = __basedir + "/public/photo/goals/" + sampleFile.name;
+
+        sampleFile.mv(uploadPath, function (err) {
+          if (err) {
+            http.response(res, 500, false, err);
+          } else {
+            console.log("File Was Uploaded");
+          }
+        });
+      }
+
       const Creating = await controllers.goals.Insert(req.body);
       if (Creating) {
         http.response(res, 201, true, "Created successful");
