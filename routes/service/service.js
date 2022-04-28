@@ -187,7 +187,6 @@ router
   })
   .post(async (req, res, next) => {
     try {
-      //save image
       if (!req.files) {
         const Creating = await controllers.services.Insert(req.body);
         if (Creating) {
@@ -196,6 +195,7 @@ router
           http.response(res, 400, false, "Bad request, unable to created data");
         }
       } else {
+        // Save Image
         sampleFile = req.files.service_img;
         uploadPath = __basedir + "/public/photo/services/" + sampleFile.name;
 
@@ -222,9 +222,7 @@ router
         } else {
           http.response(res, 400, false, "Bad request, unable to created data");
         }
-
       }
-      
     } catch (e) {
       console.log(e);
       http.response(res, 500, false, "Internal Server Error");
@@ -236,6 +234,39 @@ router
   .put(async (req, res, next) => {
     try {
       const ID = req.params.id;
+
+      if (req.files) {
+        const fixResult = await controllers.services.GetbyID(ID);
+        const file = req.files.service_img;
+
+        // Save Static Image
+        sampleFile = file;
+        uploadPath = __basedir + "/public/photo/services/" + sampleFile.name;
+
+        sampleFile.mv(uploadPath, function (err) {
+          if (err) {
+            http.response(res, 500, false, err);
+          } else {
+            console.log("File Was Uploaded");
+          }
+        });
+
+        // Delete Static Image
+        if(file.name != fixResult.service_img) {
+          const PathToDelete =
+          __basedir + "/public/photo/services/" + fixResult.service_img;
+        fs.unlink(PathToDelete, function (err) {
+          if (err) {http.response(res, 400, err);}
+        });
+        }
+
+        // Put Data In Database
+        const ImgName = {
+          service_img: file.name,
+        };
+        const result = await controllers.services.Update(ImgName, ID);
+      }
+
       const result = await controllers.services.Update(req.body, ID);
       if (result.affectedRows > 0) {
         http.response(res, 200, true, "Update successful");
@@ -265,6 +296,7 @@ router
     try {
       const ID = req.params.id;
       const result = await controllers.services.GetbyID(ID);
+      console.log(result.service_name);
       if (result) {
         http.response(res, 200, true, "Get successful", result);
       } else {
