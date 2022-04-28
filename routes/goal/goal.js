@@ -170,7 +170,7 @@ router
       if (!req.files | (Object.keys(req.files) === 0)) {
         return http.response(res, 400, false, "No file were uploaded.");
       } else {
-        sampleFile = req.files.service_img;
+        sampleFile = req.files.goal_img;
         uploadPath = __basedir + "/public/photo/goals/" + sampleFile.name;
 
         sampleFile.mv(uploadPath, function (err) {
