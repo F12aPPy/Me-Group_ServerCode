@@ -33,13 +33,13 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(20),
             allowNull: false,
         },
-        enterprise_nametax: {
-            type: DataTypes.STRING(50),
-            allowNull: false,
-        },
         enterprise_address: {
             type: DataTypes.STRING(255),
             allowNull: false,
+        },
+        enterprise_img: {
+          type: DataTypes.TEXT,
+          allowNull: true,
         },
       }, {tableName: 'AboutUs'});
 
