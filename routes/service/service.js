@@ -187,11 +187,15 @@ router
   })
   .post(async (req, res, next) => {
     try {
-
       //save image
-      if (!req.files | (Object.keys(req.files) === 0)) {
-        return http.response(res, 400, false, "No file were uploaded.");
-      } else if (req.files.length === 1) {
+      if (!req.files) {
+        const Creating = await controllers.services.Insert(req.body);
+        if (Creating) {
+          http.response(res, 201, true, "Created successful");
+        } else {
+          http.response(res, 400, false, "Bad request, unable to created data");
+        }
+      } else {
         sampleFile = req.files.service_img;
         uploadPath = __basedir + "/public/photo/services/" + sampleFile.name;
 
@@ -202,40 +206,25 @@ router
             console.log("File Was Uploaded");
           }
         });
-      } else {
-        const multiFiles = req.files.service_img;
-        let promises = [];
-        var allServiceImgName = [];
 
-        multiFiles.forEach((file) => {
-          const savePath = __basedir + "/public/photo/services/" + file.name;
-          allServiceImgName.push(file.name);
-          promises.push(file.mv(savePath));
-        });
+        const name = req.body.service_name;
+        const detail = req.body.service_detail;
+        const img = req.files.service_img.name;
+        const data = {
+          service_name: name,
+          service_detail: detail,
+          service_img: img,
+        };
 
-        await Promise.all(promises);
+        const Creating = await controllers.services.Insert(data);
+        if (Creating) {
+          http.response(res, 201, true, "Created successful");
+        } else {
+          http.response(res, 400, false, "Bad request, unable to created data");
+        }
+
       }
-
-
-      const name = req.body.service_name;
-      const detail = req.body.service_detail;
-      const img = req.files.service_img.name;
-      // const img = req.body.service_img;
-      console.log(`name is ${name}`);
-      console.log(`detail is ${detail}`);
-      console.log(`image name : ${img}`);
-      // console.log(`Multi Image is : ${allName}`);
-      const data = {
-        service_name: name,
-        service_detail: detail,
-        service_img: img,
-      };
-      const Creating = await controllers.services.Insert(data);
-      if (Creating) {
-        http.response(res, 201, true, "Created successful");
-      } else {
-        http.response(res, 400, false, "Bad request, unable to created data");
-      }
+      
     } catch (e) {
       console.log(e);
       http.response(res, 500, false, "Internal Server Error");
