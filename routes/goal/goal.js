@@ -182,7 +182,13 @@ router
         });
       }
 
-      const Creating = await controllers.goals.Insert(req.body);
+      const data = {
+        goal_title: req.body.goal_title,
+        goal_detail: req.body.goal_detail,
+        goal_img: req.files.goal_img.name,
+        service_id: req.body.service_id,
+      }
+      const Creating = await controllers.goals.Insert(data);
       if (Creating) {
         http.response(res, 201, true, "Created successful");
       } else {
