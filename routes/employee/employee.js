@@ -176,13 +176,17 @@ router
   })
   .post(async (req, res, next) => {
     try {
-
-      //save image 
-      if (!req.files | (Object.keys(req.files) === 0)) {
-        return http.response(res, 400, false, "No file were uploaded.");
+      if (!req.files) {
+        const Creating = await controllers.employees.Insert(req.body);
+        if (Creating) {
+          http.response(res, 201, true, "Created successful");
+        } else {
+          http.response(res, 400, false, "Bad request, unable to created data");
+        }
       } else {
-        sampleFile = req.files.service_img;
-        uploadPath = __basedir + "/public/photo/employees/" + sampleFile.name;
+        // Save Image
+        sampleFile = req.files.emp_img;
+        uploadPath = __basedir + "/public/photo/employees/" + req.body.emp_first_name + req.body.emp_last_name + sampleFile.name;
 
         sampleFile.mv(uploadPath, function (err) {
           if (err) {
@@ -191,13 +195,30 @@ router
             console.log("File Was Uploaded");
           }
         });
-      }
 
-      const Creating = await controllers.employees.Insert(req.body);
-      if (Creating) {
-        http.response(res, 201, true, "Created successful");
-      } else {
-        http.response(res, 400, false, "Bad request, unable to created data");
+        const name = req.body.emp_first_name;
+        const lastname = req.body.emp_last_name;
+        const mbti_id = req.body.mbti_id;
+        const Eclass = req.body.emp_class;
+        const Equote = req.body.emp_quote;
+        const contract = req.body.emp_contract;
+        const img = req.files.emp_img.name;
+        const data = {
+          emp_first_name: name,
+          emp_last_name: lastname,
+          mbti_id: mbti_id,
+          emp_class: Eclass,
+          emp_quote: Equote,
+          emp_contract: contract,
+          emp_img: img,
+        };
+
+        const Creating = await controllers.services.Insert(data);
+        if (Creating) {
+          http.response(res, 201, true, "Created successful");
+        } else {
+          http.response(res, 400, false, "Bad request, unable to created data");
+        }
       }
     } catch (e) {
       console.log(e);
@@ -234,5 +255,65 @@ router.route("/employees/:id")
                 http.response(res, 500, false, 'Internal server error')
             }
         });
+
+router
+  .route("/employees/image/:id")
+  .put(async (req, res, next) => {
+    try {
+      const ID = req.params.id;
+
+        const fixResult = await controllers.employees.GetbyID(ID);
+        const file = req.files.emp_img;
+
+        if(fixResult.emp_img === null) {
+          // Save Static Image
+        sampleFile = file;
+        uploadPath = __basedir + "/public/photo/employees/" + fixResult.emp_first_name + fixResult.emp_last_name + sampleFile.name;
+
+        sampleFile.mv(uploadPath, function (err) {
+          if (err) {
+            http.response(res, 500, false, err);
+          } else {
+            console.log("File Was Uploaded");
+          }
+        });
+        } else {
+
+          // Delete Static Image
+          const PathToDelete = __basedir + "/public/photo/employees/" + fixResult.emp_first_name + fixResult.emp_last_name + fixResult.emp_img;
+        fs.unlink(PathToDelete, function (err) {
+          if (err) {console.log('Dont Have File in folder')}
+        });
+
+        // Save Static Image
+        sampleFile = file;
+        uploadPath = __basedir + "/public/photo/employees/" + fixResult.emp_first_name + fixResult.emp_last_name + sampleFile.name;
+
+        sampleFile.mv(uploadPath, function (err) {
+          if (err) {
+            http.response(res, 500, false, err);
+          } else {
+            console.log("File Was Uploaded");
+          }
+        });
+
+        }
+
+        // Put Data In Database
+        const ImgName = {
+          emp_img: file.name,
+        };
+        const result = await controllers.services.Update(ImgName, ID);
+        if (result.affectedRows > 0) {
+          http.response(res, 200, true, "Update successful");
+        } else {
+          http.response(res, 204, false, "No Content, no data in entity");
+        }
+
+    } catch (e) {
+      console.log(e);
+      http.response(res,500,false, "Internal server error")
+    }
+  })
 
 module.exports = router;

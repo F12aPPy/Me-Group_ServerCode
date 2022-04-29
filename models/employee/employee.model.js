@@ -40,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
           type: DataTypes.STRING(255),
           allowNull: true,
         },
-        image: {
+        emp_img: {
           type: DataTypes.TEXT,
           allowNull: false,
         } ,   

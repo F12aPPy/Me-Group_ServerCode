@@ -105,7 +105,7 @@ router
   .route("/enterprises")
   .get(async (req, res, next) => {
     try {
-      const result = await controllers.enterprises.List();
+      const result = await controllers.enterprises.Get();
       if (result) {
         http.response(res, 200, true, "Get successful", result);
       } else {
@@ -118,75 +118,14 @@ router
   })
   .post(async (req, res, next) => {
     try {
-      const data = req.body;
-      if (!req.files) {
-        const Creating = await controllers.enterprises.Insert(data);
-        if (Creating) {
-          http.response(res, 201, true, "Created successful");
-        } else {
-          http.response(res, 400, false, "Bad request, unable to created data");
-        }
-      } else if ((req.files.enterprise_img).length > 1) {
-
-        const multiFiles = req.files.enterprise_img;
-        let promises = [];
-        var allAboutUsImgName = [];
-
-        // Save Images
-        multiFiles.forEach((file) => {
-          const savePath = __basedir + "/public/photo/aboutUs/" + file.name;
-          allAboutUsImgName.push(file.name);
-          promises.push(file.mv(savePath));
-        });
-
-        await Promise.all(promises);
-
-        // Input Data
-        const InputData = {
-          enterprise_name : data.enterprise_name,
-          enterprise_surname: data.enterprise_surname,
-          enterprise_detail: data.enterprise_detail,
-          enterprise_phone: data.enterprise_phone,
-          enterprise_address: data.enterprise_address,
-          enterprise_img: JSON.stringify(allAboutUsImgName),
-        }
-        const Creating = await controllers.enterprises.Insert(InputData);
-        if (Creating) {
-          http.response(res, 201, true, "Created successful");
-        } else {
-          http.response(res, 400, false, "Bad request, unable to created data");
-        }
-      } else {
-
-        // Save Image
-        sampleFile = req.files.enterprise_img;
-        uploadPath = __basedir + "/public/photo/aboutUs/" + sampleFile.name;
-
-        sampleFile.mv(uploadPath, function (err) {
-          if (err) {
-            http.response(res, 500, false, err);
-          } else {
-            console.log("File Was Uploaded");
-          }
-        });
-
-        // Input Data
-        const InputData = {
-          enterprise_name : data.enterprise_name,
-          enterprise_surname: data.enterprise_surname,
-          enterprise_detail: data.enterprise_detail,
-          enterprise_phone: data.enterprise_phone,
-          enterprise_address: data.enterprise_address,
-          enterprise_img: sampleFile.name,
-        }
-        const Creating = await controllers.enterprises.Insert(InputData);
+        const Creating = await controllers.enterprises.Insert(req.body);
         if (Creating) {
           http.response(res, 201, true, "Created successful");
         } else {
           http.response(res, 400, false, "Bad request, unable to created data");
         }
 
-      }
+      // }
     } catch (e) {
       console.log(e);
       http.response(res, 500, false, "Internal Server Error");
@@ -209,19 +148,5 @@ router
       http.response(res, 500, false, "Internal server error");
     }
   })
-  .delete(async (req, res, next) => {
-    try {
-      const ID = req.params.id;
-      const result = await controllers.enterprises.Delete(ID);
-      if (result.affectedRows > 0) {
-        http.response(res, 200, true, "Deleted successful");
-      } else {
-        http.response(res, 400, false, "Bad request, unable to query deleted");
-      }
-    } catch (e) {
-      console.log(e);
-      http.response(res, 500, false, "Internal server error");
-    }
-  });
 
 module.exports = router;

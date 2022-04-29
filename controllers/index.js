@@ -4,15 +4,15 @@ const services = require('./services/service.controller');
 const goals = require('./goal/goal.controller');
 const ContractUs = require('./contractUs/contract_us.controller');
 const user_admin = require('./user_admin/user_admin.controller');
-
+const enterprise_img = require('./AboutUsImage/aboutUs_img.controller');
 
 module.exports = {
     enterprises: {
         Insert: enterprises.Insert,
         Update: enterprises.Update,
-        List: enterprises.List,
-        GetbyID: enterprises.GetByID,
-        Delete: enterprises.Delete
+        Get: enterprises.Get,
+        // GetbyID: enterprises.GetByID,
+        // Delete: enterprises.Delete
     },
     employees: {
         Insert: employees.Insert,
@@ -48,5 +48,12 @@ module.exports = {
         List: user_admin.List,
         GetByID: user_admin.GetByID,
         Delete: user_admin.Delete
+    },
+    enterprise_img: {
+        Insert: enterprise_img.Insert,
+        Update: enterprise_img.Update,
+        List: enterprise_img.List,
+        GetByID: enterprise_img.GetByID,
+        Delete: enterprise_img.Delete
     },
 };
