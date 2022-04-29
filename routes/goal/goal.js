@@ -3,6 +3,7 @@ const router = express.Router();
 // const bcrypt = require('bcrypt');
 const http = require("../../config/http");
 const controllers = require("../../controllers/index");
+const fs = require('fs');
 
 
 
@@ -289,7 +290,7 @@ router.route("/goals/image/:id")
       
               // Put Data In Database
               const ImgName = {
-                service_img: file.name,
+                goal_img: file.name,
               };
               const result = await controllers.goals.Update(ImgName, ID);
               if (result.affectedRows > 0) {
