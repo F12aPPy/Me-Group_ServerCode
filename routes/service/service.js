@@ -197,7 +197,7 @@ router
       } else {
         // Save Image
         sampleFile = req.files.service_img;
-        uploadPath = __basedir + "/public/photo/services/" + sampleFile.name;
+        uploadPath = __basedir + "/public/photo/services/" + req.body.service_name + sampleFile.name;
 
         sampleFile.mv(uploadPath, function (err) {
           if (err) {
@@ -235,37 +235,7 @@ router
     try {
       const ID = req.params.id;
 
-      if (req.files) {
-        const fixResult = await controllers.services.GetbyID(ID);
-        const file = req.files.service_img;
-
-        // Save Static Image
-        sampleFile = file;
-        uploadPath = __basedir + "/public/photo/services/" + sampleFile.name;
-
-        sampleFile.mv(uploadPath, function (err) {
-          if (err) {
-            http.response(res, 500, false, err);
-          } else {
-            console.log("File Was Uploaded");
-          }
-        });
-
-        // Delete Static Image
-        if(file.name != fixResult.service_img) {
-          const PathToDelete =
-          __basedir + "/public/photo/services/" + fixResult.service_img;
-        fs.unlink(PathToDelete, function (err) {
-          if (err) {http.response(res, 400, err);}
-        });
-        }
-
-        // Put Data In Database
-        const ImgName = {
-          service_img: file.name,
-        };
-        const result = await controllers.services.Update(ImgName, ID);
-      }
+       
 
       const result = await controllers.services.Update(req.body, ID);
       if (result.affectedRows > 0) {
@@ -296,7 +266,6 @@ router
     try {
       const ID = req.params.id;
       const result = await controllers.services.GetbyID(ID);
-      console.log(result.service_name);
       if (result) {
         http.response(res, 200, true, "Get successful", result);
       } else {
@@ -307,5 +276,67 @@ router
       http.response(res, 500, false, "Internal server error");
     }
   });
+
+
+router
+  .route("/services/image/:id")
+  .put(async (req, res, next) => {
+    try {
+      const ID = req.params.id;
+
+        const fixResult = await controllers.services.GetbyID(ID);
+        const file = req.files.service_img;
+
+        if(fixResult.service_img === null) {
+          // Save Static Image
+        sampleFile = file;
+        uploadPath = __basedir + "/public/photo/services/" + fixResult.service_name + sampleFile.name;
+
+        sampleFile.mv(uploadPath, function (err) {
+          if (err) {
+            http.response(res, 500, false, err);
+          } else {
+            console.log("File Was Uploaded");
+          }
+        });
+        } else {
+
+          // Delete Static Image
+          const PathToDelete =
+          __basedir + "/public/photo/services/" + fixResult.service_name + fixResult.service_img;
+        fs.unlink(PathToDelete, function (err) {
+          if (err) {console.log('Dont Have File in folder')}
+        });
+
+        // Save Static Image
+        sampleFile = file;
+        uploadPath = __basedir + "/public/photo/services/" + fixResult.service_name + sampleFile.name;
+
+        sampleFile.mv(uploadPath, function (err) {
+          if (err) {
+            http.response(res, 500, false, err);
+          } else {
+            console.log("File Was Uploaded");
+          }
+        });
+
+        }
+
+        // Put Data In Database
+        const ImgName = {
+          service_img: file.name,
+        };
+        const result = await controllers.services.Update(ImgName, ID);
+        if (result.affectedRows > 0) {
+          http.response(res, 200, true, "Update successful");
+        } else {
+          http.response(res, 204, false, "No Content, no data in entity");
+        }
+
+    } catch (e) {
+      console.log(e);
+      http.response(res,500,false, "Internal server error")
+    }
+  })
 
 module.exports = router;
