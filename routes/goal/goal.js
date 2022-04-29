@@ -256,7 +256,7 @@ router.route("/goals/image/:id")
               if(fixResult.goal_img === null) {
                 // Save Static Image
               sampleFile = file;
-              uploadPath = __basedir + "/public/photo/goal/" + fixResult.goal_title + sampleFile.name;
+              uploadPath = __basedir + "/public/photo/goals/" + fixResult.goal_title + sampleFile.name;
       
               sampleFile.mv(uploadPath, function (err) {
                 if (err) {
@@ -269,14 +269,14 @@ router.route("/goals/image/:id")
       
                 // Delete Static Image
                 const PathToDelete =
-                __basedir + "/public/photo/goal/" + fixResult.goal_title + fixResult.goal_img;
+                __basedir + "/public/photo/goals/" + fixResult.goal_title + fixResult.goal_img;
               fs.unlink(PathToDelete, function (err) {
                 if (err) {console.log('Dont Have File in folder')}
               });
       
               // Save Static Image
               sampleFile = file;
-              uploadPath = __basedir + "/public/photo/goal/" + fixResult.goal_title + sampleFile.name;
+              uploadPath = __basedir + "/public/photo/goals/" + fixResult.goal_title + sampleFile.name;
       
               sampleFile.mv(uploadPath, function (err) {
                 if (err) {
