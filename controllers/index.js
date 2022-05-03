@@ -5,6 +5,7 @@ const goals = require('./goal/goal.controller');
 const ContractUs = require('./contractUs/contract_us.controller');
 const user_admin = require('./user_admin/user_admin.controller');
 const enterprise_img = require('./AboutUsImage/aboutUs_img.controller');
+const mbti = require('./MBTI/mbti.controller');
 
 module.exports = {
     enterprises: {
@@ -55,5 +56,9 @@ module.exports = {
         List: enterprise_img.List,
         GetByID: enterprise_img.GetByID,
         Delete: enterprise_img.Delete
+    },
+    mbti: {
+        Insert: mbti.Insert,
+        Get: mbti.List,
     },
 };

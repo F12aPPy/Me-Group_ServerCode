@@ -15,6 +15,7 @@ const goal = require('./routes/goal/goal');
 const service = require('./routes/service/service');
 const contractUs = require('./routes/contractUs/contract_us');
 const user_admin = require('./routes/user_admin/user_admin');
+const mbti = require('./routes/MBTI/mbti');
 
 // middleware
 const upload = require('./middlewares/uploadImg');
@@ -81,7 +82,7 @@ app.use(async (req, res, next) => {
 app.get("/", function (req, res) {
   res.status(200).json("Welcome to MY API");
 });
-app.use("/", [aboutUs, employee, goal, service, contractUs, user_admin]);
+app.use("/", [aboutUs, employee, goal, service, contractUs, user_admin, mbti]);
 app.use('/static', express.static(path.join(__dirname,'.','public','photo')))
 
 

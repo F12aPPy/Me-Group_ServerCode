@@ -28,7 +28,8 @@ List = () => {
   return new Promise(async (resolve, reject) => {
     try {
       const sql = `SELECT *
-                     FROM Employee e
+                     FROM Employee e left join Mbti m on
+                     e.mbti_id = m.id
                      WHERE e.deleted_at IS NULL`;
       const result = await con.query(sql, []);
       resolve(result);
@@ -42,7 +43,8 @@ GetByID = (ID) => {
   return new Promise(async (resolve, reject) => {
     try {
       const sql = ` SELECT *
-                      FROM Employee e
+                      FROM Employee e left join Mbti m on
+                      e.mbti_id = m.id
                       WHERE e.id=? `;
       const result = await con.query(sql, [ID]);
       resolve(result[0]);
