@@ -345,7 +345,7 @@ router
         const ImgName = {
           emp_img: file.name,
         };
-        const result = await controllers.services.Update(ImgName, ID);
+        const result = await controllers.employees.Update(ImgName, ID);
         if (result.affectedRows > 0) {
           http.response(res, 200, true, "Update successful");
         } else {
