@@ -197,7 +197,7 @@ router
       } else {
         // Save Image
         sampleFile = req.files.service_img;
-        uploadPath = __basedir + "/public/photo/services/" + req.body.service_name + sampleFile.name;
+        uploadPath = __basedir + "/public/photo/services/" + req.body.service_name + ',' + sampleFile.name;
 
         sampleFile.mv(uploadPath, function (err) {
           if (err) {
@@ -234,7 +234,16 @@ router
   .put(async (req, res, next) => {
     try {
       const ID = req.params.id;
+      const Insert = await controllers.services.GetbyID(ID);
 
+      if(Insert.service_img != null && req.body.service_name != null) {
+
+        fs.rename(__basedir + '/public/photo/services/' + Insert.service_name + ',' + Insert.service_img , __basedir + '/public/photo/services/' + req.body.service_name + ',' + Insert.service_img , (err) => {
+          if (err) throw err;
+          console.log('Rename complete!');
+        });
+
+      }
        
 
       const result = await controllers.services.Update(req.body, ID);

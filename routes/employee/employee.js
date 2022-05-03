@@ -186,7 +186,7 @@ router
       } else {
         // Save Image
         sampleFile = req.files.emp_img;
-        uploadPath = __basedir + "/public/photo/employees/" + req.body.emp_first_name + req.body.emp_last_name + sampleFile.name;
+        uploadPath = __basedir + "/public/photo/employees/" + req.body.emp_fname + req.body.emp_lname + sampleFile.name;
 
         sampleFile.mv(uploadPath, function (err) {
           if (err) {
@@ -196,16 +196,16 @@ router
           }
         });
 
-        const name = req.body.emp_first_name;
-        const lastname = req.body.emp_last_name;
+        const name = req.body.emp_fname;
+        const lastname = req.body.emp_lname;
         const mbti_id = req.body.mbti_id;
         const Eclass = req.body.emp_class;
         const Equote = req.body.emp_quote;
         const contract = req.body.emp_contract;
         const img = req.files.emp_img.name;
         const data = {
-          emp_first_name: name,
-          emp_last_name: lastname,
+          emp_fname: name,
+          emp_lname: lastname,
           mbti_id: mbti_id,
           emp_class: Eclass,
           emp_quote: Equote,
@@ -268,7 +268,7 @@ router
         if(fixResult.emp_img === null) {
           // Save Static Image
         sampleFile = file;
-        uploadPath = __basedir + "/public/photo/employees/" + fixResult.emp_first_name + fixResult.emp_last_name + sampleFile.name;
+        uploadPath = __basedir + "/public/photo/employees/" + fixResult.emp_fname + fixResult.emp_lname + sampleFile.name;
 
         sampleFile.mv(uploadPath, function (err) {
           if (err) {
@@ -280,14 +280,14 @@ router
         } else {
 
           // Delete Static Image
-          const PathToDelete = __basedir + "/public/photo/employees/" + fixResult.emp_first_name + fixResult.emp_last_name + fixResult.emp_img;
+          const PathToDelete = __basedir + "/public/photo/employees/" + fixResult.emp_fname + fixResult.emp_lname + fixResult.emp_img;
         fs.unlink(PathToDelete, function (err) {
           if (err) {console.log('Dont Have File in folder')}
         });
 
         // Save Static Image
         sampleFile = file;
-        uploadPath = __basedir + "/public/photo/employees/" + fixResult.emp_first_name + fixResult.emp_last_name + sampleFile.name;
+        uploadPath = __basedir + "/public/photo/employees/" + fixResult.emp_fname + fixResult.emp_lname + sampleFile.name;
 
         sampleFile.mv(uploadPath, function (err) {
           if (err) {

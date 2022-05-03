@@ -16,11 +16,11 @@ module.exports = (sequelize, DataTypes) => {
           allowNull: true,
           field: "deleted_at",
         },
-        employee_first_name: {
+        emp_fname: {
           type: DataTypes.STRING(50),
           allowNull: false,
         },
-        employee_last_name: {
+        emp_lname: {
           type: DataTypes.STRING(50),
           allowNull: false,
         },
