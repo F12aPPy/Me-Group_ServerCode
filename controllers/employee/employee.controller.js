@@ -15,7 +15,7 @@ Insert = (values) => {
 Update = (values, ID) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const sql = "UPDATE Employee SET ? WHERE id=?";
+      const sql = "UPDATE Employee SET ? WHERE employee_id=?";
       const result = await con.query(sql, [values, ID]);
       resolve(result);
     } catch (e) {
@@ -45,7 +45,7 @@ GetByID = (ID) => {
       const sql = ` SELECT *
                       FROM Employee e left join Mbti m on
                       e.mbti_id = m.id
-                      WHERE e.id=? `;
+                      WHERE e.employee_id=? `;
       const result = await con.query(sql, [ID]);
       resolve(result[0]);
     } catch (e) {
@@ -57,7 +57,7 @@ GetByID = (ID) => {
 Delete = (ID) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const sql = "UPDATE Employee SET deleted_at=NOW() WHERE id=?";
+      const sql = "UPDATE Employee SET deleted_at=NOW() WHERE employee_id=?";
       const result = await con.query(sql, [ID]);
       resolve(result);
     } catch (e) {

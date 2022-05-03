@@ -32,7 +32,7 @@ List = () => {
 Delete = (ID) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const sql = "UPDATE AboutUs_Image SET deleted_at=NOW() WHERE id=?";
+      const sql = "UPDATE AboutUs_Image SET deleted_at=NOW() WHERE aboutUs_Image_id=?";
       const result = await con.query(sql, [ID]);
       resolve(result);
     } catch (e) {

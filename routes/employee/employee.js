@@ -258,7 +258,7 @@ router.route("/employees/:id")
             try {
                 const ID = req.params.id
 
-                const DeleteImgResult = controllers.employees.GetbyID(ID);
+                const DeleteImgResult = await controllers.employees.GetbyID(ID);
 
                 if(DeleteImgResult.emp_img != null) {
                   // Delete Static Image
