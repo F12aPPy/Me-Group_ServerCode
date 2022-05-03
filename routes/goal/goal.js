@@ -172,7 +172,7 @@ router
         return http.response(res, 400, false, "No file were uploaded.");
       } else {
         sampleFile = req.files.goal_img;
-        uploadPath = __basedir + "/public/photo/goals/" + req.body.goal_title + sampleFile.name;
+        uploadPath = __basedir + "/public/photo/goals/" + req.body.goal_title + ',' + sampleFile.name;
 
         sampleFile.mv(uploadPath, function (err) {
           if (err) {
@@ -205,6 +205,18 @@ router.route("/goals/:id")
     .put(async (req, res, next) => {
         try {
             const ID = req.params.id;
+
+            const Insert = await controllers.goals.GetbyID(ID);
+
+            if(Insert.goal_img != null && req.body.goal_title != Insert.goal_title) {
+
+              fs.rename(__basedir + '/public/photo/goals/' + Insert.goal_title + ',' + Insert.goal_img , __basedir + '/public/photo/services/' + req.body.goal_title + ',' + Insert.goal_img , (err) => {
+                if (err) throw err;
+                console.log('Rename complete!');
+              });
+
+            }
+
             const result = await controllers.goals.Update(req.body, ID);
             if (result.affectedRows > 0) {
             http.response(res, 200, true, "Update successful");
@@ -256,7 +268,7 @@ router.route("/goals/image/:id")
               if(fixResult.goal_img === null) {
                 // Save Static Image
               sampleFile = file;
-              uploadPath = __basedir + "/public/photo/goals/" + fixResult.goal_title + sampleFile.name;
+              uploadPath = __basedir + "/public/photo/goals/" + fixResult.goal_title + ',' + sampleFile.name;
       
               sampleFile.mv(uploadPath, function (err) {
                 if (err) {
@@ -269,14 +281,14 @@ router.route("/goals/image/:id")
       
                 // Delete Static Image
                 const PathToDelete =
-                __basedir + "/public/photo/goals/" + fixResult.goal_title + fixResult.goal_img;
+                __basedir + "/public/photo/goals/" + fixResult.goal_title + ',' + fixResult.goal_img;
               fs.unlink(PathToDelete, function (err) {
                 if (err) {console.log('Dont Have File in folder')}
               });
       
               // Save Static Image
               sampleFile = file;
-              uploadPath = __basedir + "/public/photo/goals/" + fixResult.goal_title + sampleFile.name;
+              uploadPath = __basedir + "/public/photo/goals/" + fixResult.goal_title + ',' + sampleFile.name;
       
               sampleFile.mv(uploadPath, function (err) {
                 if (err) {

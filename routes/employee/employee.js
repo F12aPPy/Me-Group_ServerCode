@@ -186,7 +186,7 @@ router
       } else {
         // Save Image
         sampleFile = req.files.emp_img;
-        uploadPath = __basedir + "/public/photo/employees/" + req.body.emp_fname + req.body.emp_lname + sampleFile.name;
+        uploadPath = __basedir + "/public/photo/employees/" + req.body.emp_fname + ',' + req.body.emp_lname + ',' + sampleFile.name;
 
         sampleFile.mv(uploadPath, function (err) {
           if (err) {
@@ -230,6 +230,18 @@ router.route("/employees/:id")
     .put(async (req, res, next) => {
         try {
             const ID = req.params.id;
+
+            const Insert = await controllers.employees.GetbyID(ID);
+
+            if(Insert.emp_img != null && (req.body.emp_fname + req.body.emp_lname) != (Insert.emp_fname + Insert.emp_lname)) {
+
+              fs.rename(__basedir + '/public/photo/employees/' + Insert.emp_fname + ',' + Insert.emp_lname + ',' + Insert.service_img , __basedir + '/public/photo/employees/' + req.body.emp_fname + ',' + req.body.emp_lname + ',' + Insert.service_img , (err) => {
+                if (err) throw err;
+                console.log('Rename complete!');
+              });
+
+            }
+
             const result = await controllers.employees.Update(req.body, ID);
             if (result.affectedRows > 0) {
             http.response(res, 200, true, "Update successful");

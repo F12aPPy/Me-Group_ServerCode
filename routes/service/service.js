@@ -299,7 +299,7 @@ router
         if(fixResult.service_img === null) {
           // Save Static Image
         sampleFile = file;
-        uploadPath = __basedir + "/public/photo/services/" + fixResult.service_name + sampleFile.name;
+        uploadPath = __basedir + "/public/photo/services/" + fixResult.service_name + ',' + sampleFile.name;
 
         sampleFile.mv(uploadPath, function (err) {
           if (err) {
@@ -312,14 +312,14 @@ router
 
           // Delete Static Image
           const PathToDelete =
-          __basedir + "/public/photo/services/" + fixResult.service_name + fixResult.service_img;
+          __basedir + "/public/photo/services/" + fixResult.service_name + ',' + fixResult.service_img;
         fs.unlink(PathToDelete, function (err) {
           if (err) {console.log('Dont Have File in folder')}
         });
 
         // Save Static Image
         sampleFile = file;
-        uploadPath = __basedir + "/public/photo/services/" + fixResult.service_name + sampleFile.name;
+        uploadPath = __basedir + "/public/photo/services/" + fixResult.service_name + ',' + sampleFile.name;
 
         sampleFile.mv(uploadPath, function (err) {
           if (err) {
