@@ -310,7 +310,7 @@ router
         if(fixResult.emp_img === null) {
           // Save Static Image
         sampleFile = file;
-        uploadPath = __basedir + "/public/photo/employees/" + fixResult.emp_fname + fixResult.emp_lname + sampleFile.name;
+        uploadPath = __basedir + "/public/photo/employees/" + fixResult.emp_fname + ',' + fixResult.emp_lname + ',' + sampleFile.name;
 
         sampleFile.mv(uploadPath, function (err) {
           if (err) {
@@ -322,14 +322,14 @@ router
         } else {
 
           // Delete Static Image
-          const PathToDelete = __basedir + "/public/photo/employees/" + fixResult.emp_fname + fixResult.emp_lname + fixResult.emp_img;
+          const PathToDelete = __basedir + "/public/photo/employees/" + fixResult.emp_fname + ',' + fixResult.emp_lname + ',' + fixResult.emp_img;
         fs.unlink(PathToDelete, function (err) {
           if (err) {console.log('Dont Have File in folder')}
         });
 
         // Save Static Image
         sampleFile = file;
-        uploadPath = __basedir + "/public/photo/employees/" + fixResult.emp_fname + fixResult.emp_lname + sampleFile.name;
+        uploadPath = __basedir + "/public/photo/employees/" + fixResult.emp_fname + ',' + fixResult.emp_lname + ',' + sampleFile.name;
 
         sampleFile.mv(uploadPath, function (err) {
           if (err) {
