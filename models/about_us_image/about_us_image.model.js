@@ -1,5 +1,10 @@
 module.exports = (sequelize, DataTypes) => {
     let AboutUs = sequelize.define("AboutUs_Image", {
+        aboutUs_Image_id : {
+          type: DataTypes.INTEGER,
+          autoIncrement: true,
+          primaryKey: true,
+        },
         createdAt: {
           type: "TIMESTAMP",
           defaultValue: sequelize.fn('NOW'),
