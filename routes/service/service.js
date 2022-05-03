@@ -236,7 +236,7 @@ router
       const ID = req.params.id;
       const Insert = await controllers.services.GetbyID(ID);
 
-      if(Insert.service_img != null && req.body.service_name != null) {
+      if(Insert.service_img != null && req.body.service_name != Insert.service_name) {
 
         fs.rename(__basedir + '/public/photo/services/' + Insert.service_name + ',' + Insert.service_img , __basedir + '/public/photo/services/' + req.body.service_name + ',' + Insert.service_img , (err) => {
           if (err) throw err;
