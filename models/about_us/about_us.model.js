@@ -37,10 +37,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(255),
             allowNull: false,
         },
-        enterprise_img: {
-          type: DataTypes.TEXT,
-          allowNull: true,
-        },
+        // enterprise_img: {
+        //   type: DataTypes.TEXT,
+        //   allowNull: true,
+        // },
       }, {tableName: 'AboutUs'});
 
     return AboutUs

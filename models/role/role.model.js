@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         role_detail: {
           type: DataTypes.TEXT,
-          allowNull: false
+          allowNull: true
         },
       }, {tableName: 'Role'});
 

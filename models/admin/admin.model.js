@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         Uadmin_firstname: {
           type: DataTypes.STRING(255),
-          allowNull: true,
+          allowNull: false,
         },
         Uadmin_lastname: {
           type: DataTypes.STRING(255),
