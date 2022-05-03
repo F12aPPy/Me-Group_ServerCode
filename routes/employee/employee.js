@@ -3,6 +3,7 @@ const router = express.Router();
 // const bcrypt = require('bcrypt');
 const http = require("../../config/http");
 const controllers = require("../../controllers/index");
+const fs = require('fs');
 
 /**
  * @swagger

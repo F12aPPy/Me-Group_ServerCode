@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const http = require("../../config/http");
 const controllers = require("../../controllers/index");
+const fs = require('fs');
 
 router
   .route("/aboutUs/image")
