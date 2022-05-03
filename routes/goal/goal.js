@@ -210,7 +210,7 @@ router.route("/goals/:id")
 
             if(Insert.goal_img != null && req.body.goal_title != Insert.goal_title) {
 
-              fs.rename(__basedir + '/public/photo/goals/' + Insert.goal_title + ',' + Insert.goal_img , __basedir + '/public/photo/services/' + req.body.goal_title + ',' + Insert.goal_img , (err) => {
+              fs.rename(__basedir + '/public/photo/goals/' + Insert.goal_title + ',' + Insert.goal_img , __basedir + '/public/photo/goals/' + req.body.goal_title + ',' + Insert.goal_img , (err) => {
                 if (err) throw err;
                 console.log('Rename complete!');
               });
