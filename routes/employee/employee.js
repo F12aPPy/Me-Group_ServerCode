@@ -197,24 +197,24 @@ router
           }
         });
 
-        const name = req.body.emp_fname;
-        const lastname = req.body.emp_lname;
+        const emp_fname = req.body.emp_fname;
+        const emp_lname = req.body.emp_lname;
         const mbti_id = req.body.mbti_id;
-        const Eclass = req.body.emp_class;
-        const Equote = req.body.emp_quote;
-        const contract = req.body.emp_contract;
+        const emp_class = req.body.emp_class;
+        const emp_quote = req.body.emp_quote;
+        const emp_contract = req.body.emp_contract;
         const img = req.files.emp_img.name;
         const data = {
-          emp_fname: name,
-          emp_lname: lastname,
+          emp_fname: emp_fname,
+          emp_lname: emp_lname,
           mbti_id: mbti_id,
-          emp_class: Eclass,
-          emp_quote: Equote,
-          emp_contract: contract,
+          emp_class: emp_class,
+          emp_quote: emp_quote,
+          emp_contract: emp_contract,
           emp_img: img,
         };
         console.log('data is : ',data);
-        const Creating = await controllers.services.Insert(data);
+        const Creating = await controllers.employees.Insert(data);
         if (Creating) {
           http.response(res, 201, true, "Created successful");
         } else {
