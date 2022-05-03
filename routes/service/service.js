@@ -260,6 +260,16 @@ router
   .delete(async (req, res, next) => {
     try {
       const ID = req.params.id;
+      const DeleteImgResult = await controllers.services.GetbyID(ID);
+
+      if(DeleteImgResult.service_img != null) {
+        // Delete Static Image
+        const PathToDelete = __basedir + "/public/photo/services/" + DeleteImgResult.service_name + ',' + DeleteImgResult.service_img;
+        fs.unlink(PathToDelete, function (err) {
+          if (err) {console.log('Dont Have File in folder')}
+        });
+      }
+
       const result = await controllers.services.Delete(ID);
       if (result.affectedRows > 0) {
         http.response(res, 200, true, "Deleted successful");

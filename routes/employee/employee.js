@@ -176,6 +176,7 @@ router
   })
   .post(async (req, res, next) => {
     try {
+      console.log(req.body)
       if (!req.files) {
         const Creating = await controllers.employees.Insert(req.body);
         if (Creating) {
@@ -212,7 +213,7 @@ router
           emp_contract: contract,
           emp_img: img,
         };
-
+        console.log('data is : ',data);
         const Creating = await controllers.services.Insert(data);
         if (Creating) {
           http.response(res, 201, true, "Created successful");

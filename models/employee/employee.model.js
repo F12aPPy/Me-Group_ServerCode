@@ -42,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         emp_img: {
           type: DataTypes.TEXT,
-          allowNull: false,
+          allowNull: true,
         } ,   
       }, {tableName: 'Employee'});
 
