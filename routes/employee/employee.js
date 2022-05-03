@@ -235,12 +235,15 @@ router.route("/employees/:id")
 
             const Insert = await controllers.employees.GetbyID(ID);
 
-            if(Insert.emp_img != null && (req.body.emp_fname + req.body.emp_lname) != (Insert.emp_fname + Insert.emp_lname)) {
+            if(Insert.emp_img != null) {
 
-              fs.rename(__basedir + '/public/photo/employees/' + Insert.emp_fname + ',' + Insert.emp_lname + ',' + Insert.service_img , __basedir + '/public/photo/employees/' + req.body.emp_fname + ',' + req.body.emp_lname + ',' + Insert.service_img , (err) => {
-                if (err) throw err;
-                console.log('Rename complete!');
-              });
+              if(req.body.emp_fname != Insert.emp_fname || req.body.emp_lname != Insert.emp_lname) {
+                fs.rename(__basedir + '/public/photo/employees/' + Insert.emp_fname + ',' + Insert.emp_lname + ',' + Insert.emp_img , __basedir + '/public/photo/employees/' + req.body.emp_fname + ',' + req.body.emp_lname + ',' + Insert.emp_img , (err) => {
+                  if (err) throw err;
+                  console.log('Rename complete!');
+                });
+              } 
+              
 
             }
 
