@@ -44,6 +44,7 @@ GetByID = (ID) => {
     try {
       const sql = ` SELECT *
                       FROM User_admin u
+                      left join Roole r on u.user_id = r.id
                       WHERE u.user_id=? `;
       const result = await con.query(sql, [ID]);
       resolve(result[0]);
