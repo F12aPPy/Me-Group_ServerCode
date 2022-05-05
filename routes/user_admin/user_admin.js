@@ -11,7 +11,7 @@ router
     try {
       const result = await controllers.user_admin.List();
       if (result) {
-        delete result.Uadmin_password
+        // delete result.Uadmin_password
         http.response(res, 200, true, "Get successful", result);
       } else {
         http.response(res, 400, false, "Bad request, unable to query data");
@@ -21,7 +21,7 @@ router
       http.response(res, 500, false, "Internal server error");
     }
   })
-  .post(authorization ,async (req, res, next) => {
+  .post(async (req, res, next) => {
     try {
       const user = await controllers.user_admin.GetByUsername(req.body.Uadmin_username);
       if (user) {

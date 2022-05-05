@@ -29,7 +29,7 @@ List = () => {
     try {
       const sql = `SELECT u.user_id, u.Uadmin_username, u.Uadmin_firstname, u.Uadmin_lastname, r.role_name
                      FROM User_admin u 
-                     left join Role r on u.user_id = r.id 
+                     left join Role r on u.role_id = r.id 
                      WHERE u.deleted_at IS NULL`;
       const result = await con.query(sql, []);
       resolve(result);
@@ -44,7 +44,7 @@ GetByID = (ID) => {
     try {
       const sql = ` SELECT *
                       FROM User_admin u
-                      left join Role r on u.user_id = r.id
+                      left join Role r on u.role_id = r.id
                       WHERE u.user_id=? `;
       const result = await con.query(sql, [ID]);
       resolve(result[0]);
