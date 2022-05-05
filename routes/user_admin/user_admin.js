@@ -23,6 +23,11 @@ router
   })
   .post(authorization ,async (req, res, next) => {
     try {
+      const user = await controllers.user_admin.GetByUsername(req.body.Uadmin_password);
+      if (user) {
+        http.response(res, 404, fasle, 'Username is duplicate')
+        return
+      }
       const Creating = await controllers.user_admin.Insert(req.body);
       if (Creating) {
         http.response(res, 201, true, "Created successful");
