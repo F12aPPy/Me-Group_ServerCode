@@ -41,7 +41,7 @@ List = () => {
 GetByID = (ID) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const sql = ` SELECT u.user_id, u.Uadmin_username
+      const sql = ` SELECT *
                       FROM User_admin u
                       WHERE u.user_id=? `;
       const result = await con.query(sql, [ID]);
@@ -56,7 +56,7 @@ GetByUsername = (Username) => {
   return new Promise(async (resolve, reject) => {
     try {
       const sql = ` SELECT u.user_id, u.Uadmin_username, u.Uadmin_password
-                    FROM Users_admin u
+                    FROM User_admin u
                     WHERE u.Uadmin_username=? AND u.deleted_at IS NULL `
       const result = await con.query(sql, [Username]);
       resolve(result[0]);
