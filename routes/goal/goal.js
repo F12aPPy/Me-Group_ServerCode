@@ -4,6 +4,7 @@ const router = express.Router();
 const http = require("../../config/http");
 const controllers = require("../../controllers/index");
 const fs = require('fs');
+const authorization = require('../../middlewares/authorize')
 
 
 
@@ -164,7 +165,7 @@ router
       http.response(res, 500, false, "Internal server error");
     }
   })
-  .post(async (req, res, next) => {
+  .post(authorization,async (req, res, next) => {
     try {
 
       //save image 
@@ -202,7 +203,7 @@ router
   });
 
 router.route("/goals/:id")
-    .put(async (req, res, next) => {
+    .put(authorization,async (req, res, next) => {
         try {
             const ID = req.params.id;
 
@@ -228,7 +229,7 @@ router.route("/goals/:id")
             http.response(res, 500, false, "Internal server error");
         }
         })
-    .delete(async (req, res, next) => {
+    .delete(authorization,async (req, res, next) => {
             try {
                 const ID = req.params.id
 

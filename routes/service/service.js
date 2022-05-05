@@ -4,6 +4,7 @@ const router = express.Router();
 const http = require("../../config/http");
 const controllers = require("../../controllers/index");
 const fs = require("fs");
+const authorization = require('../../middlewares/authorize')
 
 /**
  * @swagger
@@ -184,7 +185,7 @@ router
       http.response(res, 500, false, "Internal server error");
     }
   })
-  .post(async (req, res, next) => {
+  .post(authorization,async (req, res, next) => {
     try {
       if (!req.files) {
         const Creating = await controllers.services.Insert(req.body);
@@ -230,7 +231,7 @@ router
 
 router
   .route("/services/:id")
-  .put(async (req, res, next) => {
+  .put(authorization,async (req, res, next) => {
     try {
       const ID = req.params.id;
       const Insert = await controllers.services.GetbyID(ID);
@@ -256,7 +257,7 @@ router
       http.response(res, 500, false, "Internal server error");
     }
   })
-  .delete(async (req, res, next) => {
+  .delete(authorization,async (req, res, next) => {
     try {
       const ID = req.params.id;
       const DeleteImgResult = await controllers.services.GetbyID(ID);
@@ -298,7 +299,7 @@ router
 
 router
   .route("/services/image/:id")
-  .put(async (req, res, next) => {
+  .put(authorization,async (req, res, next) => {
     try {
       const ID = req.params.id;
 

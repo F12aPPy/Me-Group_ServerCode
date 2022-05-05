@@ -3,6 +3,7 @@ const router = express.Router();
 // const bcrypt = require('bcrypt');
 const http = require("../../config/http");
 const controllers = require("../../controllers/index");
+const authorization = require('../../middlewares/authorize')
 
 /**
  * @swagger
@@ -116,7 +117,7 @@ router
       http.response(res, 500, false, "Internal server error");
     }
   })
-  .post(async (req, res, next) => {
+  .post(authorization, async (req, res, next) => {
     try {
         const Creating = await controllers.enterprises.Insert(req.body);
         if (Creating) {
@@ -134,7 +135,7 @@ router
 
 router
   .route("/enterprises/:id")
-  .put(async (req, res, next) => {
+  .put(authorization, async (req, res, next) => {
     try {
       const ID = req.params.id;
       const result = await controllers.enterprises.Update(req.body, ID);

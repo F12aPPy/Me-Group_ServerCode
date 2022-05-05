@@ -4,6 +4,7 @@ const router = express.Router();
 const http = require("../../config/http");
 const controllers = require("../../controllers/index");
 const fs = require('fs');
+const authorization = require('../../middlewares/authorize')
 
 /**
  * @swagger
@@ -175,7 +176,7 @@ router
       http.response(res, 500, false, "Internal server error");
     }
   })
-  .post(async (req, res, next) => {
+  .post(authorization,async (req, res, next) => {
     try {
       console.log(req.body)
       if (!req.files) {
@@ -229,7 +230,7 @@ router
   });
 
 router.route("/employees/:id")
-    .put(async (req, res, next) => {
+    .put(authorization, async (req, res, next) => {
         try {
             const ID = req.params.id;
 
@@ -258,7 +259,7 @@ router.route("/employees/:id")
             http.response(res, 500, false, "Internal server error");
         }
         })
-    .delete(async (req, res, next) => {
+    .delete(authorization, async (req, res, next) => {
             try {
                 const ID = req.params.id
 
@@ -300,7 +301,7 @@ router.route("/employees/:id")
 
 router
   .route("/employees/image/:id")
-  .put(async (req, res, next) => {
+  .put(authorization, async (req, res, next) => {
     try {
       const ID = req.params.id;
 
