@@ -18,7 +18,7 @@ const user_admin = require('./routes/user_admin/user_admin');
 const mbti = require('./routes/MBTI/mbti');
 
 // middleware
-const upload = require('./middlewares/uploadImg');
+
 
 // Import Swagger
 const swaggerUI = require("swagger-ui-express");

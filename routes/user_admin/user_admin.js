@@ -3,12 +3,14 @@ const router = express.Router();
 // const bcrypt = require('bcrypt');
 const http = require("../../config/http");
 const controllers = require("../../controllers/index");
+const authorization = require("../../middlewares/authorize");
 
 router
   .route("/user")
   .get(async (req, res, next) => {
     try {
       const result = await controllers.user_admin.List();
+      delete result.Uadmin_password
       if (result) {
         http.response(res, 200, true, "Get successful", result);
       } else {
@@ -19,7 +21,7 @@ router
       http.response(res, 500, false, "Internal server error");
     }
   })
-  .post(async (req, res, next) => {
+  .post(authorization ,async (req, res, next) => {
     try {
       const Creating = await controllers.user_admin.Insert(req.body);
       if (Creating) {

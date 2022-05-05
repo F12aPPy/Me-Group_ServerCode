@@ -1,5 +1,10 @@
 module.exports = (sequelize, DataTypes) => {
     let User_admin = sequelize.define("User_admin", {
+        user_id: {
+          type: DataTypes.INTEGER,
+          autoIncrement: true,
+          primaryKey: true,
+        },
         createdAt: {
           type: "TIMESTAMP",
           allowNull: false,
