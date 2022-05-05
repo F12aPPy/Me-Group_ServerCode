@@ -27,8 +27,9 @@ Update = (values, ID) => {
 List = () => {
   return new Promise(async (resolve, reject) => {
     try {
-      const sql = `SELECT *
-                     FROM User_admin u
+      const sql = `SELECT u.user_id, u.Uadmin_username, u.Uadmin_firstname, u.Uadmin_lastname, r.role_name
+                     FROM User_admin u 
+                     left join Role r on u.user_id = r.id 
                      WHERE u.deleted_at IS NULL`;
       const result = await con.query(sql, []);
       resolve(result);
