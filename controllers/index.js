@@ -6,6 +6,7 @@ const ContractUs = require('./contractUs/contract_us.controller');
 const user_admin = require('./user_admin/user_admin.controller');
 const enterprise_img = require('./AboutUsImage/aboutUs_img.controller');
 const mbti = require('./MBTI/mbti.controller');
+const role = require('./role/role.controller');
 
 module.exports = {
     enterprises: {
@@ -48,7 +49,8 @@ module.exports = {
         Update: user_admin.Update,
         List: user_admin.List,
         GetByID: user_admin.GetByID,
-        Delete: user_admin.Delete
+        Delete: user_admin.Delete,
+        GetByUsername: user_admin.GetByUsername,
     },
     enterprise_img: {
         Insert: enterprise_img.Insert,
@@ -60,5 +62,9 @@ module.exports = {
     mbti: {
         Insert: mbti.Insert,
         Get: mbti.List,
+    },
+    role: {
+        Insert: role.Insert,
+        Get: role.List,
     },
 };

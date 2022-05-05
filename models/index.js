@@ -14,7 +14,7 @@ const directories = [
   "./service/service.model.js",
   "./MBTI/mbti.model.js",
   "./contract_us/contract_us.model.js",
-  "./admin/admin.model.js",
+  "./user_admin/admin.model.js",
   "./role/role.model.js",
   "./about_us_image/about_us_image.model.js",
 ];

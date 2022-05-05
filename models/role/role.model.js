@@ -20,10 +20,6 @@ module.exports = (sequelize, DataTypes) => {
           type: DataTypes.STRING(255),
           allowNull: false,
         },
-        role_detail: {
-          type: DataTypes.TEXT,
-          allowNull: true
-        },
       }, {tableName: 'Role'});
 
     return Role;
