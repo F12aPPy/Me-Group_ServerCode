@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.TEXT,
             allowNull: false,
         },
-        enterprise_googleapi: {
+        enterprise_GG_key_api: {
             type: DataTypes.STRING(255),
             allowNull: false,
         },
