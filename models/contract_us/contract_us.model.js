@@ -29,8 +29,8 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.TEXT,
             allowNull: false,
         },
-        enterprise_nametax: {
-            type: DataTypes.STRING(50),
+        enterprise_googleapi: {
+            type: DataTypes.STRING(255),
             allowNull: false,
         },
         enterprise_email: {
