@@ -29,14 +29,6 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(255),
             allowNull: false,
         },
-        enterprise_phone: {
-            type: DataTypes.STRING(20),
-            allowNull: false,
-        },
-        enterprise_address: {
-            type: DataTypes.STRING(255),
-            allowNull: false,
-        },
         // enterprise_img: {
         //   type: DataTypes.TEXT,
         //   allowNull: true,
