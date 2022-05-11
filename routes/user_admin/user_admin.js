@@ -1,7 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken') // ใช้งาน jwt module
 const http = require("../../config/http");
+const fs = require('fs');
 const controllers = require("../../controllers/index");
 const authorization = require("../../middlewares/authorize");
 
@@ -21,7 +23,7 @@ router
       http.response(res, 500, false, "Internal server error");
     }
   })
-  .post(async (req, res, next) => {
+  .post(authorization, async (req, res, next) => {
     try {
       const user = await controllers.user_admin.GetByUsername(req.body.Uadmin_username);
       if (user) {
@@ -113,6 +115,38 @@ router.route("/user/:id")
               console.log(e);
               http.response(res, 500, false, 'Internal server error')
           }
-    });
+    })
+
+router.route('/user/signin')
+  .post(async (req, res, next) => {
+      try {
+        const result = await controllers.user_admin.GetByUsername(req.body.Uadmin_username);
+          console.log(result);
+          if (result) {
+            bcrypt.compare(req.body.Uadmin_password, result.Uadmin_password).then(async function (match) {
+              if (match) {
+                const privateKey = fs.readFileSync(__basedir + '/config/private.key')
+                var AccessToken = jwt.sign({
+                  "Sub": "Admin_Megroup", // ตั้งชื่อ Token
+                  "ID": result.id, // ข้อมูลที่จะนำไปใส่ใน token แนะนำเป็น ID ของ user
+                }, privateKey, { expiresIn: '1h' }); // ตั้งเวลา token
+                var token = {
+                  token_type: 'Bearer',
+                  access_token: AccessToken
+                }
+                delete result.password
+                http.response(res, 200, true, 'Sign-in successful', result, token);
+                } else {
+                   http.response(res, 404, false, 'Password is incorrect');
+                  }
+                });
+            } else {
+                http.response(res, 404, false, 'This account is not administrator')
+            }
+        } catch (e) {
+            console.log(e);
+            http.response(res, 500, false, 'Internal server error')
+        }
+    })
 
 module.exports = router;
