@@ -5,7 +5,7 @@ const fs = require('fs') // ใช้งาน file system module ของ node
 // สร้าง middleware ฟังก์ชั่นสำหรับ verification token
 const authorization = (async (req, res, next) => {
     // ใช้ค่า privateKey เ็น buffer ค่าที่อ่านได้จากไฟล์ private.key ในโฟลเดอร์ config
-    const privateKey = fs.readFileSync(__dirname + '/../config/private.key')
+    const privateKey = fs.readFileSync(__basedir + '/config/private.key')
     const authorization = req.headers['authorization']  // ดึงข้อมูล authorization ใน header
     // ถ้าไม่มีการส่งค่ามา ส่ง ข้อความ json พร้อม status 401 Unauthorized
     if (!authorization) return res.status(401).json({
@@ -32,7 +32,7 @@ const authorization = (async (req, res, next) => {
             "message": "Unauthorized" // error.sqlMessage
         })
         if (decoded.Sub == "Admin_Megroup") {
-            const result = await controllers.users.GetByID(decoded.ID);
+            const result = await controllers.user_admin.GetByID(decoded.ID);
             if (result) {
                 if (Date.now() >= decoded.exp * 1000 || decoded.Sub !== "Admin_Megroup") {
                     return res.status(401).json({

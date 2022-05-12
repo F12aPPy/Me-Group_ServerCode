@@ -25,6 +25,7 @@ router
   })
   .post(authorization, async (req, res, next) => {
     try {
+      console.log("Use POST user !!")
       const user = await controllers.user_admin.GetByUsername(req.body.Uadmin_username);
       if (user) {
         http.response(res, 404, false, 'Username is duplicate')
@@ -121,14 +122,13 @@ router.route('/user/signin')
   .post(async (req, res, next) => {
       try {
         const result = await controllers.user_admin.GetByUsername(req.body.Uadmin_username);
-          console.log(result);
           if (result) {
             bcrypt.compare(req.body.Uadmin_password, result.Uadmin_password).then(async function (match) {
               if (match) {
                 const privateKey = fs.readFileSync(__basedir + '/config/private.key')
                 var AccessToken = jwt.sign({
                   "Sub": "Admin_Megroup", // ตั้งชื่อ Token
-                  "ID": result.id, // ข้อมูลที่จะนำไปใส่ใน token แนะนำเป็น ID ของ user
+                  "ID": result.user_id, // ข้อมูลที่จะนำไปใส่ใน token แนะนำเป็น ID ของ user
                 }, privateKey, { expiresIn: '1h' }); // ตั้งเวลา token
                 var token = {
                   token_type: 'Bearer',
