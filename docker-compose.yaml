@@ -1,0 +1,35 @@
+version: '3.9'
+services:
+  web:
+    platform: linux/amd64
+    build: .
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+    environment:
+      PORT: 8000
+      NODE_ENV: production
+  db:
+    image: mariadb:10.7.3
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MARIADB_ROOT_PASSWORD: "mypass123"
+      MARIADB_DATABASE: "me_group_enterprise"
+      MARIADB_USER: "root"      
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    ports:
+      - 8090:80
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=host.docker.internal
+    depends_on:
+      - db

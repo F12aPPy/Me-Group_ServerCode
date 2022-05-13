@@ -9,9 +9,9 @@
     },
     "production": {
       "username": "root",
-      "password": "",
+      "password": "mypass123",
       "database": "me_group_enterprise",
-      "host": "localhost",
+      "host": "host.docker.internal",
       "dialect": "mysql",
       "timezone": "+07:00"
     }
