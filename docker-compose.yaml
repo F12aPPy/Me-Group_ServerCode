@@ -9,7 +9,7 @@ services:
       - "8000:8000"
     environment:
       PORT: 8000
-      NODE_ENV: production
+      NODE_ENV: development
   db:
     image: mariadb:10.7.3
     restart: always
@@ -29,7 +29,7 @@ services:
     ports:
       - 8090:80
     environment:
-      - PMA_ARBITRARY=1
-      - PMA_HOST=host.docker.internal
+      PMA_HOST: host.docker.internal
+      PMA_PORT: 3306
     depends_on:
       - db
