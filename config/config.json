@@ -9,7 +9,7 @@
   },
     "production": {
       "username": "root",
-      "password": "mypass123",
+      "password": "sunflower1234",
       "database": "me_group_enterprise",
       "host": "host.docker.internal",
       "dialect": "mysql",
