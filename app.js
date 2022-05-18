@@ -81,12 +81,14 @@ app.use(async (req, res, next) => {
   }
 });
 
+app.use('/static', express.static(path.join(__dirname,'.','public','photo')))
+app.use(express.static(path.join(__dirname,'.','build')))
+
 app.get("/", function (req, res) {
-  res.status(200).json("Welcome to MY API");
+  res.sendFile(path.join(__dirname, 'build', 'index.html'))
 });
 app.use("/", [aboutUs, aboutUsImg, employee, goal, service, contractUs, user_admin, mbti
               , role]);
-app.use('/static', express.static(path.join(__dirname,'.','public','photo')))
 
 
 module.exports = app;

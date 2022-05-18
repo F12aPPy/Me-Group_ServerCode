@@ -1,9 +1,9 @@
 {
   "development": {
     "username": "root",
-    "password": "123456",
+    "password": "",
     "database": "me_group_enterprise",
-    "host": "13.229.123.49",
+    "host": "localhost",
     "dialect": "mysql",
     "timezone": "+07:00"
   },
@@ -11,7 +11,7 @@
       "username": "root",
       "password": "sunflower1234",
       "database": "me_group_enterprise",
-      "host": "host.docker.internal",
+      "host": "db",
       "dialect": "mysql",
       "timezone": "+07:00"
     }
