@@ -27,7 +27,25 @@ Update = (values, ID) => {
 List = () => {
   return new Promise(async (resolve, reject) => {
     try {
-      const sql = `SELECT * FROM Service s left join Goal g on g.service_id = s.id WHERE s.deleted_at IS NULL;`
+      const sql = `SELECT *
+                     FROM Goal g left join Service s on
+                     g.service_id = s.id
+                     WHERE g.deleted_at IS NULL`;
+      const result = await con.query(sql, []);
+      resolve(result);
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+WebList = () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const sql = `SELECT *
+                     FROM Service s left join Goal g on
+                     g.service_id = s.id
+                     WHERE g.deleted_at IS NULL`;
       const result = await con.query(sql, []);
       resolve(result);
     } catch (e) {
@@ -68,5 +86,6 @@ module.exports = {
     Update,
     List,
     GetByID,
-    Delete
+    Delete,
+    WebList
 };
