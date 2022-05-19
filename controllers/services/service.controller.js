@@ -30,9 +30,7 @@ Update = (values, ID) => {
 List = () => {
   return new Promise(async (resolve, reject) => {
     try {
-      const sql = `SELECT *
-                     FROM Service s
-                     WHERE s.deleted_at IS NULL`;
+      const sql = `SELECT * FROM Service AS s LEFT JOIN (SELECT service_id,COUNT(goal_id) as ctn FROM Goal GROUP By service_id)g ON s.id = g.service_id WHERE s.deleted_at IS NULL`;
       const result = await con.query(sql, []);
       resolve(result);
     } catch (e) {
