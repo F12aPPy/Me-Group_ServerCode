@@ -35,7 +35,8 @@ module.exports = {
         Update: goals.Update,
         List: goals.List,
         GetbyID: goals.GetByID,
-        Delete: goals.Delete
+        Delete: goals.Delete,
+        WebList: goals.WebList
     },
     ContractUs: {
         Insert: ContractUs.Insert,

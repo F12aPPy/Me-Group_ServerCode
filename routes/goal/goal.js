@@ -329,5 +329,19 @@ router.route("/goals/image/:id")
           }
 
         })
+router.route("/webgoals")
+    .get(async (req, res, next) => {
+    try {
+      const result = await controllers.goals.WebList();
+      if (result) {
+        http.response(res, 200, true, "Get successful", result);
+      } else {
+        http.response(res, 400, false, "Bad request, unable to query data");
+      }
+    } catch (e) {
+      console.log(e);
+      http.response(res, 500, false, "Internal server error");
+    }
+  })
 
 module.exports = router;
