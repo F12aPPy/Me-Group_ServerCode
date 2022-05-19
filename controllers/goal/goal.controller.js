@@ -43,9 +43,10 @@ WebList = () => {
   return new Promise(async (resolve, reject) => {
     try {
       const sql = `SELECT *
-                     FROM Service s left join Goal g on
+                     FROM Goal g left join Service s on
                      g.service_id = s.id
-                     WHERE g.deleted_at IS NULL`;
+                     WHERE g.deleted_at IS NULL
+                     ORDER BY g.service_id`;
       const result = await con.query(sql, []);
       resolve(result);
     } catch (e) {
