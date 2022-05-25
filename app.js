@@ -18,6 +18,7 @@ const contractUs = require('./routes/contractUs/contract_us');
 const user_admin = require('./routes/user_admin/user_admin');
 const mbti = require('./routes/MBTI/mbti');
 const role = require('./routes/role/role');
+const serviceUs = require('./routes/serviceUs/serviceUs');
 
 // middleware
 
@@ -87,8 +88,10 @@ app.use(express.static(path.join(__dirname,'.','build')))
 app.get("/", function (req, res) {
   res.sendFile(path.join(__dirname, 'build', 'index.html'))
 });
+
+// Use Routes
 app.use("/", [aboutUs, aboutUsImg, employee, goal, service, contractUs, user_admin, mbti
-              , role]);
+              , role, serviceUs]);
 
 
 module.exports = app;
