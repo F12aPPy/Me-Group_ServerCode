@@ -30,7 +30,9 @@ Update = (values, ID) => {
 List = () => {
   return new Promise(async (resolve, reject) => {
     try {
-      const sql = `SELECT * FROM ServiceUs WHERE s.deleted_at IS NULL`;
+      const sql = `SELECT *
+                     FROM ServiceUs s
+                     WHERE s.deleted_at IS NULL`;
       const result = await con.query(sql, []);
       resolve(result);
     } catch (e) {

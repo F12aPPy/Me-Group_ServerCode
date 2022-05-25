@@ -7,7 +7,7 @@ const fs = require("fs");
 const authorization = require('../../middlewares/authorize')
 
 router
-  .route("/servicesUs")
+  .route("/serviceUs")
   .get(async (req, res, next) => {
     try {
       const result = await controllers.serviceUs.List();
@@ -44,10 +44,12 @@ router
         });
 
         const name = req.body.serviceUs_name;
+        const detail = req.body.serviceUs_detail;
         const img = req.files.serviceUs_img.name;
         const data = {
-          service_name: name,
-          service_img: img,
+          serviceUs_name: name,
+          serviceUs_detail: detail,
+          serviceUs_img: img,
         };
 
         const Creating = await controllers.serviceUs.Insert(data);
@@ -64,7 +66,7 @@ router
   });
 
 router
-  .route("/servicesUs/:id")
+  .route("/serviceUs/:id")
   .put(authorization,async (req, res, next) => {
     try {
       const ID = req.params.id;
@@ -132,7 +134,7 @@ router
 
 
 router
-  .route("/servicesUs/image/:id")
+  .route("/serviceUs/image/:id")
   .put(authorization,async (req, res, next) => {
     try {
       const ID = req.params.id;

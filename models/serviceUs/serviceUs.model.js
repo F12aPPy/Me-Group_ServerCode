@@ -20,6 +20,10 @@ module.exports = (sequelize, DataTypes) => {
           type: DataTypes.STRING(255),
           // allowNull: false,
         },
+        serviceUs_detail: {
+          type: DataTypes.STRING(255),
+          // allowNull: false,
+        },
         serviceUs_img: {
           type: DataTypes.TEXT,
           // allowNull: false,
