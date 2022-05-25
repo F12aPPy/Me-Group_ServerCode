@@ -190,6 +190,7 @@ router
         goal_img: req.files.goal_img.name,
         service_id: req.body.service_id,
       }
+      console.log(data)
       const Creating = await controllers.goals.Insert(data);
       if (Creating) {
         http.response(res, 201, true, "Created successful");

@@ -18,6 +18,7 @@ const contractUs = require('./routes/contractUs/contract_us');
 const user_admin = require('./routes/user_admin/user_admin');
 const mbti = require('./routes/MBTI/mbti');
 const role = require('./routes/role/role');
+const serviceUs = require('./routes/serviceUs/serviceUs');
 
 // middleware
 
@@ -86,8 +87,10 @@ app.use('/static', express.static(path.join(__dirname,'.','public','photo')))
 app.get("/", function (req, res) {
   res.status(200).json("Welcome to MY API");
 });
+
+// Use Routes
 app.use("/", [aboutUs, aboutUsImg, employee, goal, service, contractUs, user_admin, mbti
-              , role]);
+              , role, serviceUs]);
 
 
 module.exports = app;
