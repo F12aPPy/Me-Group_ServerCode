@@ -32,7 +32,7 @@ router
         }
       } else {
         // Save Image
-        sampleFile = req.files.service_img;
+        sampleFile = req.files.serviceUs_img;
         uploadPath = __basedir + "/public/photo/serviceUs/" + req.body.serviceUs_name + ',' + sampleFile.name;
 
         sampleFile.mv(uploadPath, function (err) {
