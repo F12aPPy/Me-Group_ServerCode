@@ -8,6 +8,7 @@ const enterprise_img = require('./AboutUsImage/aboutUs_img.controller');
 const mbti = require('./MBTI/mbti.controller');
 const role = require('./role/role.controller');
 const serviceUs = require('./serviceUs/serviceUs.controller');
+const MyBlog = require('./MyBlog/MyBlog.controller');
 
 module.exports = {
     enterprises: {
@@ -75,5 +76,12 @@ module.exports = {
         List: serviceUs.List,
         GetbyID: serviceUs.GetByID,
         Delete: serviceUs.Delete
+    },
+    MyBlog: {
+        Insert: MyBlog.Insert,
+        Update: MyBlog.Update,
+        List: MyBlog.List,
+        GetbyID: MyBlog.GetByID,
+        Delete: MyBlog.Delete
     }
 };
