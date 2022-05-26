@@ -72,7 +72,7 @@ router
       const ID = req.params.id;
       const Insert = await controllers.serviceUs.GetbyID(ID);
 
-      if(Insert.service_img != null && req.body.serviceUs_name != Insert.serviceUs_name) {
+      if(Insert.serviceUs_img != null && req.body.serviceUs_name != Insert.serviceUs_name) {
 
         fs.rename(__basedir + '/public/photo/serviceUs/' + Insert.serviceUs_name + ',' + Insert.serviceUs_img , __basedir + '/public/photo/serviceUs/' + req.body.serviceUs_name + ',' + Insert.serviceUs_img , (err) => {
           if (err) throw err;
@@ -100,7 +100,7 @@ router
 
       if(DeleteImgResult.serviceUs_img != null) {
         // Delete Static Image
-        const PathToDelete = __basedir + "/public/photo/serviceUs/" + DeleteImgResult.service_name + ',' + DeleteImgResult.service_img;
+        const PathToDelete = __basedir + "/public/photo/serviceUs/" + DeleteImgResult.serviceUs_name + ',' + DeleteImgResult.serviceUs_img;
         fs.unlink(PathToDelete, function (err) {
           if (err) {console.log('Dont Have File in folder')}
         });
