@@ -43,11 +43,11 @@ router
           }
         });
 
-        const name = req.body.serviceUs_name;
+        const serviceUs_name = req.body.serviceUs_name;
         const detail = req.body.serviceUs_detail;
         const img = req.files.serviceUs_img.name;
         const data = {
-          serviceUs_name: name,
+          serviceUs_name: serviceUs_name,
           serviceUs_detail: detail,
           serviceUs_img: img,
         };
