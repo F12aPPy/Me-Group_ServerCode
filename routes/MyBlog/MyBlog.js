@@ -22,6 +22,7 @@ router
   })
   .post(authorization, async (req, res, next) => {
     try {
+      console.log(req.body);
       const Creating = await controllers.MyBlog.Insert(req.body);
       if (Creating) {
         http.response(res, 201, true, "Created successful");
