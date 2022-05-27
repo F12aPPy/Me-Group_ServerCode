@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
           allowNull: false,
         },
         link_address: {
-          type: DataTypes.TEXT,
+          type: DataTypes.STRING(255),
           allowNull: false,
         },
       }, {tableName: 'MyBlog'});
