@@ -1,4 +1,4 @@
-version: '3.9'
+version: '3.2'
 services:
   web:
     platform: linux/amd64
@@ -37,6 +37,33 @@ services:
       PMA_PORT: 3306
     depends_on:
       - db
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./etc/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/promtheus
+    restart: always
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+  node-exporter:
+    image: prom/node-exporter:latest
+    ports:
+      - '9100:9100'
+  grafana:
+    image: grafana/grafana-oss:latest
+    volumes: 
+      - grafana_data:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    depends_on:
+      - prometheus
+    ports:
+      - "2000:3000"
 volumes:
   MedbVolume:
   ServerPhotoVolume:
+  prometheus_data:
+  grafana_data:
