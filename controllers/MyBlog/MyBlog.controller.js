@@ -3,7 +3,7 @@ const con = require("../../config/db");
 Insert = (values) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const sql = "INSERT INTO MyBlog SET ?";
+      const sql = "INSERT INTO MyBlog SET ??";
       const result = await con.query(sql, [values]);
       resolve(result);
     } catch (e) {
