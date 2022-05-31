@@ -330,9 +330,8 @@ router.route("/goals/image/:id")
           }
 
         })
-router
-  .route("/webgoals")
-  .get(async (req, res, next) => {
+router.route("/webgoals")
+    .get(async (req, res, next) => {
     try {
       const result = await controllers.goals.WebList();
       if (result) {

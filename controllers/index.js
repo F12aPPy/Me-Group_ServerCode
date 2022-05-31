@@ -8,6 +8,9 @@ const enterprise_img = require('./AboutUsImage/aboutUs_img.controller');
 const mbti = require('./MBTI/mbti.controller');
 const role = require('./role/role.controller');
 const serviceUs = require('./serviceUs/serviceUs.controller');
+const MyBlog = require('./MyBlog/MyBlog.controller');
+const Techstack = require('./techstack/techstack.controller');
+const WorkInformation = require('./workInformation/workInformation.controller');
 
 module.exports = {
     enterprises: {
@@ -75,5 +78,26 @@ module.exports = {
         List: serviceUs.List,
         GetbyID: serviceUs.GetByID,
         Delete: serviceUs.Delete
+    },
+    MyBlog: {
+        Insert: MyBlog.Insert,
+        Update: MyBlog.Update,
+        List: MyBlog.List,
+        GetbyID: MyBlog.GetByID,
+        Delete: MyBlog.Delete
+    },
+    Techstack: {
+        Insert: Techstack.Insert,
+        Update: Techstack.Update,
+        List: Techstack.List,
+        GetbyID: Techstack.GetByID,
+        Delete: Techstack.Delete   
+    },
+    WorkInformation: {
+        Insert: WorkInformation.Insert,
+        Update: WorkInformation.Update,
+        List: WorkInformation.List,
+        GetbyID: WorkInformation.GetByID,
+        Delete: WorkInformation.Delete   
     }
 };

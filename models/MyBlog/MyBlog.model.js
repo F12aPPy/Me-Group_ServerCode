@@ -1,5 +1,10 @@
 module.exports = (sequelize, DataTypes) => {
-    let Service = sequelize.define("ServiceUs", {
+    let MyBlog = sequelize.define("MyBlog", {
+        MyBlog_id : {
+            type: DataTypes.INTEGER,
+            autoIncrement: true,
+            primaryKey: true,
+          },
         createdAt: {
           type: "TIMESTAMP",
           allowNull: false,
@@ -16,19 +21,15 @@ module.exports = (sequelize, DataTypes) => {
           allowNull: true,
           field: "deleted_at",
         },
-        serviceUs_name: {
+        employee_id: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+        },
+        link_address: {
           type: DataTypes.STRING(255),
-          // allowNull: false,
+          allowNull: false,
         },
-        serviceUs_detail: {
-          type: DataTypes.TEXT,
-          // allowNull: false,
-        },
-        serviceUs_img: {
-          type: DataTypes.TEXT,
-          // allowNull: false,
-        },
-      }, {tableName: 'ServiceUs'});
+      }, {tableName: 'MyBlog'});
 
-    return Service;
+    return MyBlog;
 };

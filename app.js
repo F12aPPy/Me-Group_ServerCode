@@ -19,6 +19,8 @@ const user_admin = require('./routes/user_admin/user_admin');
 const mbti = require('./routes/MBTI/mbti');
 const role = require('./routes/role/role');
 const serviceUs = require('./routes/serviceUs/serviceUs');
+const MyBlog = require('./routes/MyBlog/MyBlog');
+const Techstack = require('.//routes/Techstack/techstack');
 
 // middleware
 
@@ -83,15 +85,14 @@ app.use(async (req, res, next) => {
 });
 
 app.use('/static', express.static(path.join(__dirname,'.','public','photo')))
-app.use(express.static(path.join(__dirname,'.','build')))
 
 app.get("/", function (req, res) {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'))
+  res.status(200).json("Welcome to MY API");
 });
 
 // Use Routes
 app.use("/", [aboutUs, aboutUsImg, employee, goal, service, contractUs, user_admin, mbti
-              , role, serviceUs]);
+              , role, serviceUs, MyBlog, Techstack]);
 
 
 module.exports = app;

@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    let Service = sequelize.define("ServiceUs", {
+    let Techstack = sequelize.define("Techstack", {
         createdAt: {
           type: "TIMESTAMP",
           allowNull: false,
@@ -16,19 +16,15 @@ module.exports = (sequelize, DataTypes) => {
           allowNull: true,
           field: "deleted_at",
         },
-        serviceUs_name: {
+        techstack_name: {
           type: DataTypes.STRING(255),
-          // allowNull: false,
+          allowNull: false,
         },
-        serviceUs_detail: {
+        techstack_img: {
           type: DataTypes.TEXT,
           // allowNull: false,
         },
-        serviceUs_img: {
-          type: DataTypes.TEXT,
-          // allowNull: false,
-        },
-      }, {tableName: 'ServiceUs'});
+      }, {tableName: 'Techstack'});
 
-    return Service;
+    return Techstack;
 };

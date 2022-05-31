@@ -7,10 +7,10 @@ const fs = require("fs");
 const authorization = require('../../middlewares/authorize')
 
 router
-  .route("/serviceUs")
+  .route("/techstacks")
   .get(async (req, res, next) => {
     try {
-      const result = await controllers.serviceUs.List();
+      const result = await controllers.Techstack.List();
       if (result) {
         http.response(res, 200, true, "Get successful", result);
       } else {
@@ -24,16 +24,17 @@ router
   .post(authorization,async (req, res, next) => {
     try {
       if (!req.files) {
-        const Creating = await controllers.serviceUs.Insert(req.body);
+        const Creating = await controllers.Techstack.Insert(req.body);
         if (Creating) {
           http.response(res, 201, true, "Created successful");
         } else {
           http.response(res, 400, false, "Bad request, unable to created data");
         }
       } else {
+
         // Save Image
-        sampleFile = req.files.serviceUs_img;
-        uploadPath = __basedir + "/public/photo/serviceUs/" + req.body.serviceUs_name + ',' + sampleFile.name;
+        sampleFile = req.files.techstack_img;
+        uploadPath = __basedir + "/public/photo/techstacks/" + req.body.techstack_name + ',' + sampleFile.name;
 
         sampleFile.mv(uploadPath, function (err) {
           if (err) {
@@ -43,16 +44,14 @@ router
           }
         });
 
-        const serviceUs_name = req.body.serviceUs_name;
-        const detail = req.body.serviceUs_detail;
-        const img = req.files.serviceUs_img.name;
+        const name = req.body.techstack_name;
+        const img = req.files.techstack_img.name;
         const data = {
-          serviceUs_name: serviceUs_name,
-          serviceUs_detail: detail,
-          serviceUs_img: img,
+          techstack_name: name,
+          techstack_img: img,
         };
 
-        const Creating = await controllers.serviceUs.Insert(data);
+        const Creating = await controllers.services.Insert(data);
         if (Creating) {
           http.response(res, 201, true, "Created successful");
         } else {
@@ -66,23 +65,22 @@ router
   });
 
 router
-  .route("/serviceUs/:id")
+  .route("/techstacks/:id")
   .put(authorization,async (req, res, next) => {
     try {
       const ID = req.params.id;
-      const Insert = await controllers.serviceUs.GetbyID(ID);
+      const Insert = await controllers.Techstack.GetbyID(ID);
 
-      if(Insert.serviceUs_img != null && req.body.serviceUs_name != Insert.serviceUs_name) {
+      if(Insert.techstack_img != null && req.body.techstack_name != Insert.techstack_name) {
 
-        fs.rename(__basedir + '/public/photo/serviceUs/' + Insert.serviceUs_name + ',' + Insert.serviceUs_img , __basedir + '/public/photo/serviceUs/' + req.body.serviceUs_name + ',' + Insert.serviceUs_img , (err) => {
+        fs.rename(__basedir + '/public/photo/techstacks/' + Insert.techstack_name + ',' + Insert.techstack_img , __basedir + '/public/photo/techstacks/' + req.body.techstack_name + ',' + Insert.techstack_img , (err) => {
           if (err) throw err;
           console.log('Rename complete!');
         });
 
       }
        
-
-      const result = await controllers.serviceUs.Update(req.body, ID);
+      const result = await controllers.Techstack.Update(req.body, ID);
       if (result.affectedRows > 0) {
         http.response(res, 200, true, "Update successful");
       } else {
@@ -95,18 +93,19 @@ router
   })
   .delete(authorization,async (req, res, next) => {
     try {
-      const ID = req.params.id;
-      const DeleteImgResult = await controllers.serviceUs.GetbyID(ID);
 
-      if(DeleteImgResult.serviceUs_img != null) {
+      const ID = req.params.id;
+      const DeleteImgResult = await controllers.services.GetbyID(ID);
+
+      if(DeleteImgResult.techstack_img != null) {
         // Delete Static Image
-        const PathToDelete = __basedir + "/public/photo/serviceUs/" + DeleteImgResult.serviceUs_name + ',' + DeleteImgResult.serviceUs_img;
+        const PathToDelete = __basedir + "/public/photo/techstacks/" + DeleteImgResult.techstack_name + ',' + DeleteImgResult.techstack_img;
         fs.unlink(PathToDelete, function (err) {
           if (err) {console.log('Dont Have File in folder')}
         });
       }
 
-      const result = await controllers.serviceUs.Delete(ID);
+      const result = await controllers.Techstack.Delete(ID);
       if (result.affectedRows > 0) {
         http.response(res, 200, true, "Deleted successful");
       } else {
@@ -120,7 +119,7 @@ router
   .get(async (req, res, next) => {
     try {
       const ID = req.params.id;
-      const result = await controllers.serviceUs.GetbyID(ID);
+      const result = await controllers.Techstack.GetbyID(ID);
       if (result) {
         http.response(res, 200, true, "Get successful", result);
       } else {
@@ -134,18 +133,18 @@ router
 
 
 router
-  .route("/serviceUs/image/:id")
+  .route("/teckstacks/image/:id")
   .put(authorization,async (req, res, next) => {
     try {
       const ID = req.params.id;
 
-        const fixResult = await controllers.serviceUs.GetbyID(ID);
-        const file = req.files.serviceUs_img;
+        const fixResult = await controllers.Techstack.GetbyID(ID);
+        const file = req.files.techstack_img;
 
-        if(fixResult.serviceUs_img === null) {
+        if(fixResult.techstack_img === null) {
           // Save Static Image
         sampleFile = file;
-        uploadPath = __basedir + "/public/photo/serviceUs/" + fixResult.serviceUs_name + ',' + sampleFile.name;
+        uploadPath = __basedir + "/public/photo/techstack/" + fixResult.techstack_name + ',' + sampleFile.name;
 
         sampleFile.mv(uploadPath, function (err) {
           if (err) {
@@ -158,14 +157,14 @@ router
 
           // Delete Static Image
           const PathToDelete =
-          __basedir + "/public/photo/serviceUs/" + fixResult.serviceUs_name + ',' + fixResult.serviceUs_img;
+          __basedir + "/public/photo/techstacks/" + fixResult.techstack_name + ',' + fixResult.techstack_img;
         fs.unlink(PathToDelete, function (err) {
           if (err) {console.log('Dont Have File in folder')}
         });
 
         // Save Static Image
         sampleFile = file;
-        uploadPath = __basedir + "/public/photo/serviceUs/" + fixResult.serviceUs_name + ',' + sampleFile.name;
+        uploadPath = __basedir + "/public/photo/techstacks/" + fixResult.techstack_name + ',' + sampleFile.name;
 
         sampleFile.mv(uploadPath, function (err) {
           if (err) {
@@ -179,9 +178,9 @@ router
 
         // Put Data In Database
         const ImgName = {
-          serviceUs_img: file.name,
+          techstack_img: file.name,
         };
-        const result = await controllers.serviceUs.Update(ImgName, ID);
+        const result = await controllers.services.Update(ImgName, ID);
         if (result.affectedRows > 0) {
           http.response(res, 200, true, "Update successful");
         } else {
