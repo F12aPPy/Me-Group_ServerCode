@@ -63,6 +63,20 @@ router.route("/MyBlog/:id")
                 console.log(e);
                 http.response(res, 500, false, 'Internal server error')
             }
+        })
+    .get(async (req, res, next) => {
+            try {
+              const ID = req.params.id;
+              const result = await controllers.MyBlog.GetbyID(ID);
+              if (result) {
+                http.response(res, 200, true, "Get successful", result);
+              } else {
+                http.response(res, 204, false, "No Content, no data in entity");
+              }
+            } catch (e) {
+              console.log(e);
+              http.response(res, 500, false, "Internal server error");
+            }
         });
 
 module.exports = router;
