@@ -10,7 +10,6 @@ const role = require('./role/role.controller');
 const serviceUs = require('./serviceUs/serviceUs.controller');
 const MyBlog = require('./MyBlog/MyBlog.controller');
 const Techstack = require('./techstack/techstack.controller');
-const WorkInformation = require('./workInformation/workInformation.controller');
 
 module.exports = {
     enterprises: {
@@ -92,12 +91,5 @@ module.exports = {
         List: Techstack.List,
         GetbyID: Techstack.GetByID,
         Delete: Techstack.Delete   
-    },
-    WorkInformation: {
-        Insert: WorkInformation.Insert,
-        Update: WorkInformation.Update,
-        List: WorkInformation.List,
-        GetbyID: WorkInformation.GetByID,
-        Delete: WorkInformation.Delete   
     }
 };
