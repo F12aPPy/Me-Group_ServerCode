@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
-// const bcrypt = require('bcrypt');
 const http = require("../../config/http");
 const controllers = require("../../controllers/index");
 const fs = require("fs");
 const authorization = require('../../middlewares/authorize')
+const { v4: uuidv4 } = require('uuid');
 
 /**
  * @swagger
@@ -185,7 +185,7 @@ router
       http.response(res, 500, false, "Internal server error");
     }
   })
-  .post(authorization,async (req, res, next) => {
+  .post(async (req, res, next) => {
     try {
       if (!req.files) {
         const Creating = await controllers.services.Insert(req.body);
@@ -195,34 +195,28 @@ router
           http.response(res, 400, false, "Bad request, unable to created data");
         }
       } else {
+        // Setting Path and File To Save Image
+        const FiletoSave = req.files.service_img;
+        const NameFile = uuidv4() + "-" + req.files.service_img.name
+        const contents = __basedir + "/public/photo/services/" + NameFile;
         // Save Image
-        sampleFile = req.files.service_img;
-        uploadPath = __basedir + "/public/photo/services/" + req.body.service_name + ',' + sampleFile.name;
-
-        sampleFile.mv(uploadPath, function (err) {
+        FiletoSave.mv(contents, async function (err) {
           if (err) {
-            http.response(res, 500, false, err);
+            http.response(res, 500, false, "Fail to Upload Image");
           } else {
-            console.log("File Was Uploaded");
+            // Save Data To Database
+            const Data = req.body
+            Data.service_img = NameFile
+            const Creating = await controllers.services.Insert(Data);
+            if (Creating) {
+              http.response(res, 200, true, "Created successful");
+            } else {
+              http.response(res, 400, false, "Bad request, unable to created data");
+            }
+            // end of save Data
           }
-        });
-
-        const name = req.body.service_name;
-        const detail = req.body.service_detail;
-        const img = req.files.service_img.name;
-        const data = {
-          service_name: name,
-          service_detail: detail,
-          service_img: img,
-        };
-
-        const Creating = await controllers.services.Insert(data);
-        if (Creating) {
-          http.response(res, 201, true, "Created successful");
-        } else {
-          http.response(res, 400, false, "Bad request, unable to created data");
-        }
-      }
+        }); // end to save Image
+      } 
     } catch (e) {
       console.log(e);
       http.response(res, 500, false, "Internal Server Error");
