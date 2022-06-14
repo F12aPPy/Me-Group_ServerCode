@@ -215,7 +215,7 @@ router
             }
             // end of save Data
           }
-        }); // end to save Image
+        }); // end of Setting Path and File To Save Image
       } 
     } catch (e) {
       console.log(e);
@@ -225,30 +225,49 @@ router
 
 router
   .route("/services/:id")
-  .put(authorization,async (req, res, next) => {
-    
+  .put(async (req, res, next) => {
     try {
       // Setting
       const ID = req.params.id;
       const GetById = await controllers.services.GetbyID(ID);
       // End Setting
-
-      if(GetById.service_img != null && req.body.service_name != GetById.service_name) {
-
-        fs.rename(__basedir + '/public/photo/services/' + Insert.service_name + ',' + Insert.service_img , __basedir + '/public/photo/services/' + req.body.service_name + ',' + Insert.service_img , (err) => {
-          if (err) throw err;
-          console.log('Rename complete!');
-        });
-
-      }
-       
-
-      const result = await controllers.services.Update(req.body, ID);
-      if (result.affectedRows > 0) {
-        http.response(res, 200, true, "Update successful");
+      if(!req.files) {
+        const result = await controllers.services.Update(req.body, ID);
+        if (result.affectedRows > 0) {
+          http.response(res, 200, true, "Update successful");
+        } else {
+          http.response(res, 204, false, "No Content, no data in entity");
+        }
       } else {
-        http.response(res, 204, false, "No Content, no data in entity");
+        // Check DataBase Have a Image Name
+        if(GetById.service_img != null || GetById.service_img == "") {
+          const PathToDelete = __basedir + "/public/photo/services/" + GetById.service_img
+          // Delete Image
+          fs.unlink(PathToDelete, (err) => { if(err){throw err}})
+        }
+        // Setting Path and File To Save Image
+        const FiletoSave = req.files.service_img;
+        const NameFile = uuidv4() + "-" + req.files.service_img.name
+        const contents = __basedir + "/public/photo/services/" + NameFile;
+        // Save Image
+        FiletoSave.mv(contents, async function (err) {
+          if (err) {
+            http.response(res, 500, false, "Fail to Upload Image");
+          } else {
+            // Save Data To Database
+            const Data = req.body
+            Data.service_img = NameFile
+            const Updated = await controllers.services.Update(Data, ID);
+            if (Updated.affectedRows > 0) {
+              http.response(res, 200, true, "Updated successful");
+            } else {
+              http.response(res, 400, false, "Bad request, unable to updated data");
+            }
+            // end of save Data
+          }
+        }); // end of Setting Path and File To Save Image
       }
+      
     } catch (e) {
       console.log(e);
       http.response(res, 500, false, "Internal server error");
