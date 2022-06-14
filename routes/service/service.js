@@ -406,4 +406,51 @@ router
     }
   })
 
+router.route("/services/image1")
+  .post(async (req, res, next) => {
+    // Setting Bucket Project
+    const storage = new Storage({
+      projectId: process.env.GCLOUD_PROJECT,
+      credentials: {
+      client_email: process.env.GCLOUD_CLIENT_EMAIL,
+      private_key: process.env.GCLOUD_PRIVATE_KEY
+      }
+    });
+    const bucket = storage.bucket(process.env.GCS_BUCKET);
+    // End setting
+    try {
+      // Check Have request file 
+      if(!req.files){
+        const Create = await controllers.services.Update(req.body, ID)
+        if(Create) {
+          http.response(res, 200, true, "Created Successful")
+        } else {
+          http.response(res, 400, false, "Bad request, unable to created data");
+        }
+      } else {
+        // When Have File
+        // Set File name and contents data 
+        const fileName = uuidv4() + "-" + req.files.service_img.name
+        const contents = req.files.service_img.data
+        // Create Bucket Path to Upload in Google Cloud
+        const file = bucket.file(`image/eiei/${fileName}`)
+        // Upload to Google cloud
+        file.save(contents)
+        // Edit data to save to Database
+        const Data = req.body
+        // console.log(file.name)
+        Data.service_img = await file.name
+        // Store Data to Database
+        const Creating = await controllers.services.Insert(Data);
+        if (Creating) {
+          http.response(res, 201, true, "Created Successful");
+        } else {
+          http.response(res, 400, false, "Bad request, unable to created data");
+        }
+      }
+    } catch (error) {
+      http.response(res, 500, false, "Internal Server Error")
+    }
+  })
+
 module.exports = router;
