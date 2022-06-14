@@ -2,7 +2,6 @@ module.exports = (sequelize, DataTypes) => {
     let AboutUs = sequelize.define("AboutUs", {
         createdAt: {
           type: "TIMESTAMP",
-          defaultValue: sequelize.fn('NOW'),
           allowNull: false,
           field: "created_at",
         },
@@ -26,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
           allowNull: false
         },
         enterprise_detail: {
-            type: DataTypes.STRING(255),
+            type: DataTypes.TEXT,
             allowNull: false,
         },
         // enterprise_img: {

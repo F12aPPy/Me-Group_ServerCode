@@ -2,7 +2,6 @@ module.exports = (sequelize, DataTypes) => {
     let ContractUs = sequelize.define("ContractUs", {
         createdAt: {
           type: "TIMESTAMP",
-          defaultValue: sequelize.fn('NOW'),
           allowNull: false,
           field: "created_at",
         },
