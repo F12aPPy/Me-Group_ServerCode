@@ -21,6 +21,7 @@ const role = require('./routes/role/role');
 const serviceUs = require('./routes/serviceUs/serviceUs');
 const MyBlog = require('./routes/MyBlog/MyBlog');
 const Techstack = require('.//routes/Techstack/techstack');
+const User_log = require('./routes/user_log/user_log');
 
 // middleware
 
@@ -92,7 +93,7 @@ app.get("/", function (req, res) {
 
 // Use Routes
 app.use("/", [aboutUs, aboutUsImg, employee, goal, service, contractUs, user_admin, mbti
-              , role, serviceUs, MyBlog, Techstack]);
+              , role, serviceUs, MyBlog, Techstack, User_log]);
 
 
 module.exports = app;

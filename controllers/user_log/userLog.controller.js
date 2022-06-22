@@ -18,7 +18,7 @@ List = () => {
       const sql = `SELECT *
                     FROM User_log ul left join User_admin ua on
                     ul.user_id = ua.user_id
-                    WHERE g.deleted_at IS NULL`;
+                    WHERE ul.deleted_at IS NULL`;
       const result = await con.query(sql, []);
       resolve(result);
     } catch (e) {
