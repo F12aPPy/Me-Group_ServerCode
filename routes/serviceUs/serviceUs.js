@@ -66,7 +66,7 @@ router
   .put(authorization,async (req, res, next) => {
     try {
       const ID = req.params.id;
-      const Insert = await controllers.serviceUs.GetbyID(ID);
+      const GetByID = await controllers.serviceUs.GetbyID(ID);
 
       if(!req.files) {
         const result = await controllers.serviceUs.Update(req.body, ID);
@@ -77,8 +77,8 @@ router
         }
       } else {
         // Delete File
-        if(Insert.serviceUs_img != null && Insert.serviceUs_img != "") {
-          const PathToDelete = __basedir + "/public/photo/serviceUs/" + Insert.serviceUs_img
+        if(GetByID.serviceUs_img != null && GetByID.serviceUs_img != "") {
+          const PathToDelete = __basedir + "/public/photo/serviceUs/" + GetByID.serviceUs_img
           fs.unlink(PathToDelete, (err) => { if(err){ console.log(err) } })
         }
         // Setting Path and File To Save Image

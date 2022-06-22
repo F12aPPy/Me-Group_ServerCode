@@ -167,35 +167,36 @@ router
   })
   .post(authorization,async (req, res, next) => {
     try {
-
-      //save image 
-      if (!req.files | (Object.keys(req.files) === 0)) {
-        return http.response(res, 400, false, "No file were uploaded.");
+      if (!req.files) {
+        const Creating = await controllers.goals.Insert(req.body);
+        if (Creating) {
+          http.response(res, 201, true, "Created successful");
+        } else {
+          http.response(res, 400, false, "Bad request, unable to created data");
+        }
       } else {
-        sampleFile = req.files.goal_img;
-        uploadPath = __basedir + "/public/photo/goals/" + req.body.goal_title + ',' + sampleFile.name;
-
-        sampleFile.mv(uploadPath, function (err) {
-          if (err) {
-            http.response(res, 500, false, err);
+       // Setting Path and File To Save Image
+        const FiletoSave = req.files.goal_img;
+        const NameFile = uuidv4() + "-" + req.files.goal_img.name
+        const contents = __basedir + "/public/photo/goals/" + NameFile;
+        // Save Image
+        FiletoSave.mv(contents, async function(err) {
+          if(err) {
+            http.response(res, 500, false, "Fail to Upload Image");
+            return 
           } else {
-            console.log("File Was Uploaded");
+             // Save Data To Database
+             const Data = req.body
+             Data.goal_img = NameFile
+             const Creating = await controllers.goals.Insert(Data);
+             if (Creating) {
+               http.response(res, 200, true, "Created successful");
+             } else {
+               http.response(res, 400, false, "Bad request, unable to created data");
+             }
+             // end of save Data
           }
-        });
-      }
-
-      const data = {
-        goal_title: req.body.goal_title,
-        goal_detail: req.body.goal_detail,
-        goal_img: req.files.goal_img.name,
-        service_id: req.body.service_id,
-      }
-      console.log(data)
-      const Creating = await controllers.goals.Insert(data);
-      if (Creating) {
-        http.response(res, 201, true, "Created successful");
-      } else {
-        http.response(res, 400, false, "Bad request, unable to created data");
+        }) // End Save Image
       }
     } catch (e) {
       console.log(e);
@@ -206,25 +207,45 @@ router
 router.route("/goals/:id")
     .put(authorization,async (req, res, next) => {
         try {
-            const ID = req.params.id;
-
-            const Insert = await controllers.goals.GetbyID(ID);
-
-            if(Insert.goal_img != null && req.body.goal_title != Insert.goal_title) {
-
-              fs.rename(__basedir + '/public/photo/goals/' + Insert.goal_title + ',' + Insert.goal_img , __basedir + '/public/photo/goals/' + req.body.goal_title + ',' + Insert.goal_img , (err) => {
-                if (err) throw err;
-                console.log('Rename complete!');
-              });
-
-            }
-
+          const ID = req.params.id;
+          const GetByID = await controllers.goals.GetbyID(ID);
+    
+          if(!req.files) {
             const result = await controllers.goals.Update(req.body, ID);
-            if (result.affectedRows > 0) {
-            http.response(res, 200, true, "Update successful");
+            if( result.affectedRows > 0 ) {
+              http.response(res, 200, true, "Update successful");
             } else {
-            http.response(res, 204, false, "No Content, no data in entity");
+              http.response(res, 204, false, "No Content, no data in entity");
             }
+          } else {
+            // Delete File
+            if(GetByID.goal_img != null && GetByID.goal_img != "") {
+              const PathToDelete = __basedir + "/public/photo/goals/" + GetByID.goal_img
+              fs.unlink(PathToDelete, (err) => { if(err){ console.log(err) } })
+            }
+            // Setting Path and File To Save Image
+            const FiletoSave = req.files.goal_img;
+            const NameFile = uuidv4() + "-" + req.files.goal_img.name
+            const contents = __basedir + "/public/photo/goals/" + NameFile;
+            // Save Image
+            FiletoSave.mv(contents, async function(err) {
+              if(err) {
+                http.response(res, 500, false, "Fail to Upload Image");
+                return 
+              } else {
+                 // Save Data To Database
+                 const Data = req.body
+                 Data.goal_img = NameFile
+                 const result = await controllers.goals.Update(Data, ID);
+                 if (result.affectedRows > 0) {
+                  http.response(res, 200, true, "Update successful");
+                 } else {
+                  http.response(res, 204, false, "No Content, no data in entity");
+                }
+                 // end of save Data
+              }
+            }) // End Save Image
+          }
         } catch (e) {
             console.log(e);
             http.response(res, 500, false, "Internal server error");
@@ -233,17 +254,12 @@ router.route("/goals/:id")
     .delete(authorization,async (req, res, next) => {
             try {
                 const ID = req.params.id
-
-                const DeleteImgResult = await controllers.goals.GetbyID(ID);
-
-                if(DeleteImgResult.goal_img != null) {
-                  // Delete Static Image
-                  const PathToDelete = __basedir + "/public/photo/goals/" + DeleteImgResult.goal_title + ',' + DeleteImgResult.goal_img;
-                  fs.unlink(PathToDelete, function (err) {
-                    if (err) {console.log('Dont Have File in folder')}
-                  });
+                const GetByID = await controllers.goals.GetbyID(ID);
+                // Delete File
+                if(GetByID.goal_img != null && GetByID.goal_img != "") {
+                  const PathToDelete = __basedir + "/public/photo/goals/" + GetByID.goal_img
+                  fs.unlink(PathToDelete, (err) => { if(err){ console.log(err) } })
                 }
-
                 const result = await controllers.goals.Delete(ID);
                 if (result.affectedRows > 0) {
                     http.response(res, 200, true, 'Deleted successful')
