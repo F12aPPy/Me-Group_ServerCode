@@ -203,6 +203,7 @@ router
         FiletoSave.mv(contents, async function (err) {
           if (err) {
             http.response(res, 500, false, "Fail to Upload Image");
+            return
           } else {
             // Save Data To Database
             const Data = req.body
@@ -243,7 +244,7 @@ router
         if(GetById.service_img != null || GetById.service_img == "") {
           const PathToDelete = __basedir + "/public/photo/services/" + GetById.service_img
           // Delete Image
-          fs.unlink(PathToDelete, (err) => { if(err){return http.response(res, 400, false, "Fail to Delete image")}})
+          fs.unlink(PathToDelete, (err) => { if(err){console.log('Can not Have Image to Delete')}})
         }
         // Setting Path and File To Save Image
         const FiletoSave = req.files.service_img;
