@@ -3,6 +3,7 @@ const router = express.Router();
 // const bcrypt = require('bcrypt');
 const http = require("../../config/http");
 const controllers = require("../../controllers/index");
+const { v4: uuidv4 } = require('uuid')
 const fs = require('fs');
 const authorization = require('../../middlewares/authorize')
 
