@@ -10,6 +10,7 @@ const role = require('./role/role.controller');
 const serviceUs = require('./serviceUs/serviceUs.controller');
 const MyBlog = require('./MyBlog/MyBlog.controller');
 const Techstack = require('./techstack/techstack.controller');
+const User_log = require('./user_log/userLog.controller');
 
 module.exports = {
     enterprises: {
@@ -91,5 +92,10 @@ module.exports = {
         List: Techstack.List,
         GetbyID: Techstack.GetByID,
         Delete: Techstack.Delete   
+    },
+    User_log: {
+        Insert: User_log.Insert,
+        List: User_log.List,
+        Delete: User_log.Delete
     }
 };
