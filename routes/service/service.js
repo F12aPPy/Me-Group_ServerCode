@@ -243,7 +243,7 @@ router
         if(GetById.service_img != null || GetById.service_img == "") {
           const PathToDelete = __basedir + "/public/photo/services/" + GetById.service_img
           // Delete Image
-          fs.unlink(PathToDelete, (err) => { if(err){throw err}})
+          fs.unlink(PathToDelete, (err) => { if(err){return http.response(res, 400, false, "Fail to Delete image")}})
         }
         // Setting Path and File To Save Image
         const FiletoSave = req.files.service_img;
@@ -278,7 +278,7 @@ router
       const ID = req.params.id;
       const DeleteImgResult = await controllers.services.GetbyID(ID);
 
-      if(DeleteImgResult.service_img != null) {
+      if(DeleteImgResult.service_img != null && DeleteImgResult.service_img != "") {
         // Delete Static Image
         const PathToDelete = __basedir + "/public/photo/services/" + DeleteImgResult.service_name + ',' + DeleteImgResult.service_img;
         fs.unlink(PathToDelete, function (err) {
@@ -322,7 +322,7 @@ router
         const fixResult = await controllers.services.GetbyID(ID);
         const file = req.files.service_img;
 
-        if(fixResult.service_img === null) {
+        if(fixResult.service_img === null || fixResult.service_img === "") {
           // Save Static Image
         sampleFile = file;
         uploadPath = __basedir + "/public/photo/services/" + fixResult.service_name + ',' + sampleFile.name;
