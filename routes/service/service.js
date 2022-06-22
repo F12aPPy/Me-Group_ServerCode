@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
-// const bcrypt = require('bcrypt');
 const http = require("../../config/http");
 const controllers = require("../../controllers/index");
 const fs = require("fs");
 const authorization = require('../../middlewares/authorize')
+const { v4: uuidv4 } = require('uuid');
 
 /**
  * @swagger
@@ -185,7 +185,7 @@ router
       http.response(res, 500, false, "Internal server error");
     }
   })
-  .post(authorization,async (req, res, next) => {
+  .post(authorization, async (req, res, next) => {
     try {
       if (!req.files) {
         const Creating = await controllers.services.Insert(req.body);
@@ -195,34 +195,28 @@ router
           http.response(res, 400, false, "Bad request, unable to created data");
         }
       } else {
+        // Setting Path and File To Save Image
+        const FiletoSave = req.files.service_img;
+        const NameFile = uuidv4() + "-" + req.files.service_img.name
+        const contents = __basedir + "/public/photo/services/" + NameFile;
         // Save Image
-        sampleFile = req.files.service_img;
-        uploadPath = __basedir + "/public/photo/services/" + req.body.service_name + ',' + sampleFile.name;
-
-        sampleFile.mv(uploadPath, function (err) {
+        FiletoSave.mv(contents, async function (err) {
           if (err) {
-            http.response(res, 500, false, err);
+            http.response(res, 500, false, "Fail to Upload Image");
           } else {
-            console.log("File Was Uploaded");
+            // Save Data To Database
+            const Data = req.body
+            Data.service_img = NameFile
+            const Creating = await controllers.services.Insert(Data);
+            if (Creating) {
+              http.response(res, 200, true, "Created successful");
+            } else {
+              http.response(res, 400, false, "Bad request, unable to created data");
+            }
+            // end of save Data
           }
-        });
-
-        const name = req.body.service_name;
-        const detail = req.body.service_detail;
-        const img = req.files.service_img.name;
-        const data = {
-          service_name: name,
-          service_detail: detail,
-          service_img: img,
-        };
-
-        const Creating = await controllers.services.Insert(data);
-        if (Creating) {
-          http.response(res, 201, true, "Created successful");
-        } else {
-          http.response(res, 400, false, "Bad request, unable to created data");
-        }
-      }
+        }); // end of Setting Path and File To Save Image
+      } 
     } catch (e) {
       console.log(e);
       http.response(res, 500, false, "Internal Server Error");
@@ -231,27 +225,49 @@ router
 
 router
   .route("/services/:id")
-  .put(authorization,async (req, res, next) => {
+  .put(async (req, res, next) => {
     try {
+      // Setting
       const ID = req.params.id;
-      const Insert = await controllers.services.GetbyID(ID);
-
-      if(Insert.service_img != null && req.body.service_name != Insert.service_name) {
-
-        fs.rename(__basedir + '/public/photo/services/' + Insert.service_name + ',' + Insert.service_img , __basedir + '/public/photo/services/' + req.body.service_name + ',' + Insert.service_img , (err) => {
-          if (err) throw err;
-          console.log('Rename complete!');
-        });
-
-      }
-       
-
-      const result = await controllers.services.Update(req.body, ID);
-      if (result.affectedRows > 0) {
-        http.response(res, 200, true, "Update successful");
+      const GetById = await controllers.services.GetbyID(ID);
+      // End Setting
+      if(!req.files) {
+        const result = await controllers.services.Update(req.body, ID);
+        if (result.affectedRows > 0) {
+          http.response(res, 200, true, "Update successful");
+        } else {
+          http.response(res, 204, false, "No Content, no data in entity");
+        }
       } else {
-        http.response(res, 204, false, "No Content, no data in entity");
+        // Check DataBase Have a Image Name
+        if(GetById.service_img != null || GetById.service_img == "") {
+          const PathToDelete = __basedir + "/public/photo/services/" + GetById.service_img
+          // Delete Image
+          fs.unlink(PathToDelete, (err) => { if(err){throw err}})
+        }
+        // Setting Path and File To Save Image
+        const FiletoSave = req.files.service_img;
+        const NameFile = uuidv4() + "-" + req.files.service_img.name
+        const contents = __basedir + "/public/photo/services/" + NameFile;
+        // Save Image
+        FiletoSave.mv(contents, async function (err) {
+          if (err) {
+            http.response(res, 500, false, "Fail to Upload Image");
+          } else {
+            // Save Data To Database
+            const Data = req.body
+            Data.service_img = NameFile
+            const Updated = await controllers.services.Update(Data, ID);
+            if (Updated.affectedRows > 0) {
+              http.response(res, 200, true, "Updated successful");
+            } else {
+              http.response(res, 400, false, "Bad request, unable to updated data");
+            }
+            // end of save Data
+          }
+        }); // end of Setting Path and File To Save Image
       }
+      
     } catch (e) {
       console.log(e);
       http.response(res, 500, false, "Internal server error");
