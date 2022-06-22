@@ -16,9 +16,21 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: true,
             field: 'deleted_at'
         },
-        enterprise_phone: {
+        enterprise_phone1: {
             type: DataTypes.STRING(255),
             allowNull: false,
+        },
+        enterprise_PhoneName1: {
+          type: DataTypes.STRING(255),
+          allowNull: false,
+        },
+        enterprise_phone2: {
+          type: DataTypes.STRING(255),
+          allowNull: false,
+        },
+        enterprise_PhoneName2: {
+          type: DataTypes.STRING(255),
+          allowNull: false,
         },
         enterprise_address: {
             type: DataTypes.TEXT,
