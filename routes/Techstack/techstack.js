@@ -12,7 +12,7 @@ router
     try {
       const result = await controllers.Techstack.List();
       if (result) {
-        http.response(res, 200, true, "Get successful", result);
+        http.response(res, 201, true, "Get successful", result);
       } else {
         http.response(res, 400, false, "Bad request, unable to query data");
       }
@@ -82,7 +82,7 @@ router
        
       const result = await controllers.Techstack.Update(req.body, ID);
       if (result.affectedRows > 0) {
-        http.response(res, 200, true, "Update successful");
+        http.response(res, 201, true, "Update successful");
       } else {
         http.response(res, 204, false, "No Content, no data in entity");
       }
@@ -107,7 +107,7 @@ router
 
       const result = await controllers.Techstack.Delete(ID);
       if (result.affectedRows > 0) {
-        http.response(res, 200, true, "Deleted successful");
+        http.response(res, 201, true, "Deleted successful");
       } else {
         http.response(res, 400, false, "Bad request, unable to query deleted");
       }
@@ -121,7 +121,7 @@ router
       const ID = req.params.id;
       const result = await controllers.Techstack.GetbyID(ID);
       if (result) {
-        http.response(res, 200, true, "Get successful", result);
+        http.response(res, 201, true, "Get successful", result);
       } else {
         http.response(res, 204, false, "No Content, no data in entity");
       }
@@ -182,7 +182,7 @@ router
         };
         const result = await controllers.services.Update(ImgName, ID);
         if (result.affectedRows > 0) {
-          http.response(res, 200, true, "Update successful");
+          http.response(res, 201, true, "Update successful");
         } else {
           http.response(res, 204, false, "No Content, no data in entity");
         }

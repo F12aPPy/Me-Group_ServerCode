@@ -11,7 +11,7 @@ router
     try {
       const result = await controllers.MyBlog.List();
       if (result) {
-        http.response(res, 200, true, "Get successful", result);
+        http.response(res, 201, true, "Get successful", result);
       } else {
         http.response(res, 400, false, "Bad request, unable to query data");
       }
@@ -41,7 +41,7 @@ router.route("/MyBlog/:id")
             const ID = req.params.id;
             const result = await controllers.MyBlog.Update(req.body, ID);
             if (result.affectedRows > 0) {
-            http.response(res, 200, true, "Update successful");
+            http.response(res, 201, true, "Update successful");
             } else {
             http.response(res, 204, false, "No Content, no data in entity");
             }
@@ -55,7 +55,7 @@ router.route("/MyBlog/:id")
                 const ID = req.params.id
                 const result = await controllers.MyBlog.Delete(ID);
                 if (result.affectedRows > 0) {
-                    http.response(res, 200, true, 'Deleted successful')
+                    http.response(res, 201, true, 'Deleted successful')
                 } else {
                     http.response(res, 400, false, 'Bad request, unable to query deleted')
                 }
@@ -69,7 +69,7 @@ router.route("/MyBlog/:id")
               const ID = req.params.id;
               const result = await controllers.MyBlog.GetbyID(ID);
               if (result) {
-                http.response(res, 200, true, "Get successful", result);
+                http.response(res, 201, true, "Get successful", result);
               } else {
                 http.response(res, 204, false, "No Content, no data in entity");
               }

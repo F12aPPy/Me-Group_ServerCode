@@ -108,7 +108,7 @@ router
     try {
       const result = await controllers.enterprises.Get();
       if (result) {
-        http.response(res, 200, true, "Get successful", result);
+        http.response(res, 201, true, "Get successful", result);
       } else {
         http.response(res, 400, false, "Bad request, unable to query data");
       }
@@ -140,7 +140,7 @@ router
       const ID = req.params.id;
       const result = await controllers.enterprises.Update(req.body, ID);
       if (result.affectedRows > 0) {
-        http.response(res, 200, true, "Update successful");
+        http.response(res, 201, true, "Update successful");
       } else {
         http.response(res, 204, false, "No Content, no data in entity");
       }

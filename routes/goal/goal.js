@@ -157,7 +157,7 @@ router
     try {
       const result = await controllers.goals.List();
       if (result) {
-        http.response(res, 200, true, "Get successful", result);
+        http.response(res, 201, true, "Get successful", result);
       } else {
         http.response(res, 400, false, "Bad request, unable to query data");
       }
@@ -191,7 +191,7 @@ router
              Data.goal_img = NameFile
              const Creating = await controllers.goals.Insert(Data);
              if (Creating) {
-               http.response(res, 200, true, "Created successful");
+               http.response(res, 201, true, "Created successful");
              } else {
                http.response(res, 400, false, "Bad request, unable to created data");
              }
@@ -214,7 +214,7 @@ router.route("/goals/:id")
           if(!req.files) {
             const result = await controllers.goals.Update(req.body, ID);
             if( result.affectedRows > 0 ) {
-              http.response(res, 200, true, "Update successful");
+              http.response(res, 201, true, "Update successful");
             } else {
               http.response(res, 204, false, "No Content, no data in entity");
             }
@@ -239,7 +239,7 @@ router.route("/goals/:id")
                  Data.goal_img = NameFile
                  const result = await controllers.goals.Update(Data, ID);
                  if (result.affectedRows > 0) {
-                  http.response(res, 200, true, "Update successful");
+                  http.response(res, 201, true, "Update successful");
                  } else {
                   http.response(res, 204, false, "No Content, no data in entity");
                 }
@@ -263,7 +263,7 @@ router.route("/goals/:id")
                 }
                 const result = await controllers.goals.Delete(ID);
                 if (result.affectedRows > 0) {
-                    http.response(res, 200, true, 'Deleted successful')
+                    http.response(res, 201, true, 'Deleted successful')
                 } else {
                     http.response(res, 400, false, 'Bad request, unable to query deleted')
                 }
@@ -277,7 +277,7 @@ router.route("/goals/:id")
             const ID = req.params.id;
             const result = await controllers.goals.GetbyID(ID);
             if (result) {
-              http.response(res, 200, true, "Get successful", result);
+              http.response(res, 201, true, "Get successful", result);
             } else {
               http.response(res, 204, false, "No Content, no data in entity");
             }
@@ -336,7 +336,7 @@ router.route("/goals/image/:id")
               };
               const result = await controllers.goals.Update(ImgName, ID);
               if (result.affectedRows > 0) {
-                http.response(res, 200, true, "Update successful");
+                http.response(res, 201, true, "Update successful");
               } else {
                 http.response(res, 204, false, "No Content, no data in entity");
               }
@@ -352,7 +352,7 @@ router.route("/webgoals")
     try {
       const result = await controllers.goals.WebList();
       if (result) {
-        http.response(res, 200, true, "Get successful", result);
+        http.response(res, 201, true, "Get successful", result);
       } else {
         http.response(res, 400, false, "Bad request, unable to query data");
       }

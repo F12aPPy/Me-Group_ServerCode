@@ -13,7 +13,7 @@ router
     try {
       const result = await controllers.serviceUs.List();
       if (result) {
-        http.response(res, 200, true, "Get successful", result);
+        http.response(res, 201, true, "Get successful", result);
       } else {
         http.response(res, 400, false, "Bad request, unable to query data");
       }
@@ -47,7 +47,7 @@ router
              Data.serviceUs_img = NameFile
              const Creating = await controllers.serviceUs.Insert(Data);
              if (Creating) {
-               http.response(res, 200, true, "Created successful");
+               http.response(res, 201, true, "Created successful");
              } else {
                http.response(res, 400, false, "Bad request, unable to created data");
              }
@@ -71,7 +71,7 @@ router
       if(!req.files) {
         const result = await controllers.serviceUs.Update(req.body, ID);
         if( result.affectedRows > 0 ) {
-          http.response(res, 200, true, "Update successful");
+          http.response(res, 201, true, "Update successful");
         } else {
           http.response(res, 204, false, "No Content, no data in entity");
         }
@@ -96,7 +96,7 @@ router
              Data.serviceUs_img = NameFile
              const result = await controllers.serviceUs.Update(Data, ID);
              if (result.affectedRows > 0) {
-              http.response(res, 200, true, "Update successful");
+              http.response(res, 201, true, "Update successful");
              } else {
               http.response(res, 204, false, "No Content, no data in entity");
             }
@@ -120,7 +120,7 @@ router
       }
       const result = await controllers.serviceUs.Delete(ID);
       if (result.affectedRows > 0) {
-        http.response(res, 200, true, "Deleted successful");
+        http.response(res, 201, true, "Deleted successful");
       } else {
         http.response(res, 400, false, "Bad request, unable to query deleted");
       }
@@ -134,7 +134,7 @@ router
       const ID = req.params.id;
       const result = await controllers.serviceUs.GetbyID(ID);
       if (result) {
-        http.response(res, 200, true, "Get successful", result);
+        http.response(res, 201, true, "Get successful", result);
       } else {
         http.response(res, 204, false, "No Content, no data in entity");
       }
@@ -195,7 +195,7 @@ router
         };
         const result = await controllers.serviceUs.Update(ImgName, ID);
         if (result.affectedRows > 0) {
-          http.response(res, 200, true, "Update successful");
+          http.response(res, 201, true, "Update successful");
         } else {
           http.response(res, 204, false, "No Content, no data in entity");
         }

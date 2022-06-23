@@ -9,7 +9,7 @@ router.route("/user_logs")
         try {
             const result = await controllers.User_log.List();
             if (result) {
-              http.response(res, 200, true, "Get successful", result);
+              http.response(res, 201, true, "Get successful", result);
             } else {
               http.response(res, 400, false, "Bad request, unable to query data");
             }
