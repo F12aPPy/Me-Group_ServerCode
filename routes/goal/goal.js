@@ -291,56 +291,44 @@ router.route("/goals/image/:id")
         .put(async (req, res, next) => {
           try {
             const ID = req.params.id;
-      
-              const fixResult = await controllers.goals.GetbyID(ID);
-              const file = req.files.goal_img;
-      
-              if(fixResult.goal_img === null) {
-                // Save Static Image
-              sampleFile = file;
-              uploadPath = __basedir + "/public/photo/goals/" + fixResult.goal_title + ',' + sampleFile.name;
-      
-              sampleFile.mv(uploadPath, function (err) {
-                if (err) {
-                  http.response(res, 500, false, err);
-                } else {
-                  console.log("File Was Uploaded");
-                }
-              });
-              } else {
-      
-                // Delete Static Image
-                const PathToDelete =
-                __basedir + "/public/photo/goals/" + fixResult.goal_title + ',' + fixResult.goal_img;
-              fs.unlink(PathToDelete, function (err) {
-                if (err) {console.log('Dont Have File in folder')}
-              });
-      
+            const fixResult = await controllers.goals.GetbyID(ID);
+            const file = req.files.goal_img;
+            const fileName = uuidv4() + file.name;
+            if(fixResult.goal_img == null || fixResult.goal_img == "") {
               // Save Static Image
-              sampleFile = file;
-              uploadPath = __basedir + "/public/photo/goals/" + fixResult.goal_title + ',' + sampleFile.name;
-      
-              sampleFile.mv(uploadPath, function (err) {
-                if (err) {
-                  http.response(res, 500, false, err);
-                } else {
-                  console.log("File Was Uploaded");
-                }
-              });
-      
-              }
-      
-              // Put Data In Database
-              const ImgName = {
-                goal_img: file.name,
-              };
-              const result = await controllers.goals.Update(ImgName, ID);
-              if (result.affectedRows > 0) {
-                http.response(res, 201, true, "Update successful");
+            uploadPath = __basedir + "/public/photo/goals/" + fileName;
+            file.mv(uploadPath, function (err) {
+              if (err) {
+                http.response(res, 500, false, err);
               } else {
-                http.response(res, 204, false, "No Content, no data in entity");
+                console.log("File Was Uploaded");
               }
-      
+            });
+            } else {
+              // Delete Static Image
+              const PathToDelete = __basedir + "/public/photo/goals/" + fixResult.goal_img;
+            fs.unlink(PathToDelete, function (err) {
+              if (err) {console.log('Dont Have File in folder')}
+            });
+            // Save Static Image
+            uploadPath = __basedir + "/public/photo/goals/" + fileName;
+            file.mv(uploadPath, function (err) {
+              if (err) {
+                http.response(res, 500, false, err);
+              } else {
+                console.log("File Was Uploaded");
+              }
+            });
+            }
+            const Image = {
+              goal_img: fileName
+            }
+            const result = await controllers.goals.Update(Image, ID);
+            if (result.affectedRows > 0) {
+              http.response(res, 201, true, "Update successful");
+            } else {
+              http.response(res, 204, false, "No Content, no data in entity");
+            }
           } catch (e) {
             console.log(e);
             http.response(res,500,false, "Internal server error")

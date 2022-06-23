@@ -301,17 +301,14 @@ router
   .route("/employees/image/:id")
   .put(authorization, async (req, res, next) => {
     try {
-      const ID = req.params.id;
-
+        const ID = req.params.id;
         const fixResult = await controllers.employees.GetbyID(ID);
         const file = req.files.emp_img;
-
-        if(fixResult.emp_img === null) {
+        const fileName = uuidv4() + file.name;
+        if(fixResult.emp_img == null || fixResult.emp_img == "") {
           // Save Static Image
-        sampleFile = file;
-        uploadPath = __basedir + "/public/photo/employees/" + fixResult.emp_fname + ',' + fixResult.emp_lname + ',' + sampleFile.name;
-
-        sampleFile.mv(uploadPath, function (err) {
+        uploadPath = __basedir + "/public/photo/employees/" + fileName;
+        file.mv(uploadPath, function (err) {
           if (err) {
             http.response(res, 500, false, err);
           } else {
@@ -319,38 +316,30 @@ router
           }
         });
         } else {
-
           // Delete Static Image
-          const PathToDelete = __basedir + "/public/photo/employees/" + fixResult.emp_fname + ',' + fixResult.emp_lname + ',' + fixResult.emp_img;
+          const PathToDelete = __basedir + "/public/photo/employees/" + fixResult.emp_img;
         fs.unlink(PathToDelete, function (err) {
           if (err) {console.log('Dont Have File in folder')}
         });
-
         // Save Static Image
-        sampleFile = file;
-        uploadPath = __basedir + "/public/photo/employees/" + fixResult.emp_fname + ',' + fixResult.emp_lname + ',' + sampleFile.name;
-
-        sampleFile.mv(uploadPath, function (err) {
+        uploadPath = __basedir + "/public/photo/employees/" + fileName;
+        file.mv(uploadPath, function (err) {
           if (err) {
             http.response(res, 500, false, err);
           } else {
             console.log("File Was Uploaded");
           }
         });
-
         }
-
-        // Put Data In Database
-        const ImgName = {
-          emp_img: file.name,
-        };
-        const result = await controllers.employees.Update(ImgName, ID);
+        const Image = {
+          emp_img: fileName
+        }
+        const result = await controllers.employees.Update(Image, ID);
         if (result.affectedRows > 0) {
           http.response(res, 201, true, "Update successful");
         } else {
           http.response(res, 204, false, "No Content, no data in entity");
         }
-
     } catch (e) {
       console.log(e);
       http.response(res,500,false, "Internal server error")

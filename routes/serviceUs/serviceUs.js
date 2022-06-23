@@ -149,17 +149,14 @@ router
   .route("/serviceUs/image/:id")
   .put(authorization,async (req, res, next) => {
     try {
-      const ID = req.params.id;
-
+        const ID = req.params.id;
         const fixResult = await controllers.serviceUs.GetbyID(ID);
         const file = req.files.serviceUs_img;
-
-        if(fixResult.serviceUs_img === null) {
+        const fileName = uuidv4() + file.name;
+        if(fixResult.serviceUs_img == null || fixResult.serviceUs_img == "") {
           // Save Static Image
-        sampleFile = file;
-        uploadPath = __basedir + "/public/photo/serviceUs/" + fixResult.serviceUs_name + ',' + sampleFile.name;
-
-        sampleFile.mv(uploadPath, function (err) {
+        uploadPath = __basedir + "/public/photo/serviceUs/" + fileName;
+        file.mv(uploadPath, function (err) {
           if (err) {
             http.response(res, 500, false, err);
           } else {
@@ -167,33 +164,25 @@ router
           }
         });
         } else {
-
           // Delete Static Image
-          const PathToDelete =
-          __basedir + "/public/photo/serviceUs/" + fixResult.serviceUs_name + ',' + fixResult.serviceUs_img;
+          const PathToDelete = __basedir + "/public/photo/serviceUs/" + fixResult.serviceUs_img;
         fs.unlink(PathToDelete, function (err) {
           if (err) {console.log('Dont Have File in folder')}
         });
-
         // Save Static Image
-        sampleFile = file;
-        uploadPath = __basedir + "/public/photo/serviceUs/" + fixResult.serviceUs_name + ',' + sampleFile.name;
-
-        sampleFile.mv(uploadPath, function (err) {
+        uploadPath = __basedir + "/public/photo/serviceUs/" + fileName;
+        file.mv(uploadPath, function (err) {
           if (err) {
             http.response(res, 500, false, err);
           } else {
             console.log("File Was Uploaded");
           }
         });
-
         }
-
-        // Put Data In Database
-        const ImgName = {
-          serviceUs_img: file.name,
-        };
-        const result = await controllers.serviceUs.Update(ImgName, ID);
+        const Image = {
+          serviceUs_img: fileName
+        }
+        const result = await controllers.serviceUs.Update(Image, ID);
         if (result.affectedRows > 0) {
           http.response(res, 201, true, "Update successful");
         } else {
