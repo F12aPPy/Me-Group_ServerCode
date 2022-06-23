@@ -185,7 +185,7 @@ router
       http.response(res, 500, false, "Internal server error");
     }
   })
-  .post( async (req, res, next) => {
+  .post(authorization, async (req, res, next) => {
     try {
       if (!req.files) {
         const Creating = await controllers.services.Insert(req.body);
@@ -316,7 +316,7 @@ router
 
 router
   .route("/services/image/:id")
-  .put( async (req, res, next) => {
+  .put(authorization, async (req, res, next) => {
     try {
         const ID = req.params.id;
         const fixResult = await controllers.services.GetbyID(ID);
