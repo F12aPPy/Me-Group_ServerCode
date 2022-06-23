@@ -14,7 +14,7 @@ router
       const result = await controllers.user_admin.List();
       if (result) {
         // delete result.Uadmin_password
-        http.response(res, 200, true, "Get successful", result);
+        http.response(res, 201, true, "Get successful", result);
       } else {
         http.response(res, 400, false, "Bad request, unable to query data");
       }
@@ -72,7 +72,7 @@ router.route("/user/:id")
                     req.body.updated_at = new Date()
                       const result = await controllers.user_admin.Update(req.body, ID);
                       if (result.affectedRows > 0) {
-                        http.response(res, 200, true, "Update successful");
+                        http.response(res, 201, true, "Update successful");
                       } else {
                         http.response(res, 204, false, "No Content, no data in entity");
                       }
@@ -93,7 +93,7 @@ router.route("/user/:id")
                 const ID = req.params.id
                 const result = await controllers.user_admin.Delete(ID);
                 if (result.affectedRows > 0) {
-                    http.response(res, 200, true, 'Deleted successful')
+                    http.response(res, 201, true, 'Deleted successful')
                 } else {
                     http.response(res, 400, false, 'Bad request, unable to query deleted')
                 }
@@ -108,7 +108,7 @@ router.route("/user/:id")
               const result = await controllers.user_admin.GetByID(ID);
               if (result) {
                   delete result.Uadmin_password
-                  http.response(res, 200, true, 'Get successful', result)
+                  http.response(res, 201, true, 'Get successful', result)
               } else {
                   http.response(res, 204, false, 'No Content, no data in entity')
               }
@@ -135,7 +135,7 @@ router.route('/user/signin')
                   access_token: AccessToken
                 }
                 delete result.password
-                http.response(res, 200, true, 'Sign-in successful', result, token);
+                http.response(res, 201, true, 'Sign-in successful', result, token);
                 } else {
                    http.response(res, 404, false, 'Password is incorrect');
                   }

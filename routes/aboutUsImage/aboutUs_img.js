@@ -11,7 +11,7 @@ router
     try {
       const result = await controllers.enterprise_img.List();
       if (result) {
-        http.response(res, 200, true, "Get successful", result);
+        http.response(res, 201, true, "Get successful", result);
       } else {
         http.response(res, 400, false, "Bad request, unable to query data");
       }
@@ -97,7 +97,7 @@ router.route("/aboutUs/image/:id")
 
                 const result = await controllers.enterprise_img.Delete(ID);
                 if (result.affectedRows > 0) {
-                    http.response(res, 200, true, 'Deleted successful')
+                    http.response(res, 201, true, 'Deleted successful')
                 } else {
                     http.response(res, 400, false, 'Bad request, unable to query deleted')
                 }
