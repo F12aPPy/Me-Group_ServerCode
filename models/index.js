@@ -20,6 +20,7 @@ const directories = [
   "./serviceUs/serviceUs.model.js",
   "./MyBlog/MyBlog.model.js",
   "./techstack/techstack_model.js",
+  "./user_log/user_log.model.js"
 ];
 
 let sequelize;

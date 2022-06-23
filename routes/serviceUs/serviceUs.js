@@ -3,8 +3,9 @@ const router = express.Router();
 // const bcrypt = require('bcrypt');
 const http = require("../../config/http");
 const controllers = require("../../controllers/index");
+const { v4: uuidv4 } = require('uuid')
 const fs = require("fs");
-const authorization = require('../../middlewares/authorize')
+const authorization = require('../../middlewares/authorize');
 
 router
   .route("/serviceUs")
@@ -31,33 +32,28 @@ router
           http.response(res, 400, false, "Bad request, unable to created data");
         }
       } else {
+       // Setting Path and File To Save Image
+        const FiletoSave = req.files.serviceUs_img;
+        const NameFile = uuidv4() + "-" + req.files.serviceUs_img.name
+        const contents = __basedir + "/public/photo/serviceUs/" + NameFile;
         // Save Image
-        sampleFile = req.files.serviceUs_img;
-        uploadPath = __basedir + "/public/photo/serviceUs/" + req.body.serviceUs_name + ',' + sampleFile.name;
-
-        sampleFile.mv(uploadPath, function (err) {
-          if (err) {
-            http.response(res, 500, false, err);
+        FiletoSave.mv(contents, async function(err) {
+          if(err) {
+            http.response(res, 500, false, "Fail to Upload Image");
+            return 
           } else {
-            console.log("File Was Uploaded");
+             // Save Data To Database
+             const Data = req.body
+             Data.serviceUs_img = NameFile
+             const Creating = await controllers.serviceUs.Insert(Data);
+             if (Creating) {
+               http.response(res, 200, true, "Created successful");
+             } else {
+               http.response(res, 400, false, "Bad request, unable to created data");
+             }
+             // end of save Data
           }
-        });
-
-        const serviceUs_name = req.body.serviceUs_name;
-        const detail = req.body.serviceUs_detail;
-        const img = req.files.serviceUs_img.name;
-        const data = {
-          serviceUs_name: serviceUs_name,
-          serviceUs_detail: detail,
-          serviceUs_img: img,
-        };
-
-        const Creating = await controllers.serviceUs.Insert(data);
-        if (Creating) {
-          http.response(res, 201, true, "Created successful");
-        } else {
-          http.response(res, 400, false, "Bad request, unable to created data");
-        }
+        }) // End Save Image
       }
     } catch (e) {
       console.log(e);
@@ -70,23 +66,43 @@ router
   .put(authorization,async (req, res, next) => {
     try {
       const ID = req.params.id;
-      const Insert = await controllers.serviceUs.GetbyID(ID);
+      const GetByID = await controllers.serviceUs.GetbyID(ID);
 
-      if(Insert.serviceUs_img != null && req.body.serviceUs_name != Insert.serviceUs_name) {
-
-        fs.rename(__basedir + '/public/photo/serviceUs/' + Insert.serviceUs_name + ',' + Insert.serviceUs_img , __basedir + '/public/photo/serviceUs/' + req.body.serviceUs_name + ',' + Insert.serviceUs_img , (err) => {
-          if (err) throw err;
-          console.log('Rename complete!');
-        });
-
-      }
-       
-
-      const result = await controllers.serviceUs.Update(req.body, ID);
-      if (result.affectedRows > 0) {
-        http.response(res, 200, true, "Update successful");
+      if(!req.files) {
+        const result = await controllers.serviceUs.Update(req.body, ID);
+        if( result.affectedRows > 0 ) {
+          http.response(res, 200, true, "Update successful");
+        } else {
+          http.response(res, 204, false, "No Content, no data in entity");
+        }
       } else {
-        http.response(res, 204, false, "No Content, no data in entity");
+        // Delete File
+        if(GetByID.serviceUs_img != null && GetByID.serviceUs_img != "") {
+          const PathToDelete = __basedir + "/public/photo/serviceUs/" + GetByID.serviceUs_img
+          fs.unlink(PathToDelete, (err) => { if(err){ console.log(err) } })
+        }
+        // Setting Path and File To Save Image
+        const FiletoSave = req.files.serviceUs_img;
+        const NameFile = uuidv4() + "-" + req.files.serviceUs_img.name
+        const contents = __basedir + "/public/photo/serviceUs/" + NameFile;
+        // Save Image
+        FiletoSave.mv(contents, async function(err) {
+          if(err) {
+            http.response(res, 500, false, "Fail to Upload Image");
+            return 
+          } else {
+             // Save Data To Database
+             const Data = req.body
+             Data.serviceUs_img = NameFile
+             const result = await controllers.serviceUs.Update(Data, ID);
+             if (result.affectedRows > 0) {
+              http.response(res, 200, true, "Update successful");
+             } else {
+              http.response(res, 204, false, "No Content, no data in entity");
+            }
+             // end of save Data
+          }
+        }) // End Save Image
       }
     } catch (e) {
       console.log(e);
@@ -96,16 +112,12 @@ router
   .delete(authorization,async (req, res, next) => {
     try {
       const ID = req.params.id;
-      const DeleteImgResult = await controllers.serviceUs.GetbyID(ID);
-
-      if(DeleteImgResult.serviceUs_img != null) {
-        // Delete Static Image
-        const PathToDelete = __basedir + "/public/photo/serviceUs/" + DeleteImgResult.serviceUs_name + ',' + DeleteImgResult.serviceUs_img;
-        fs.unlink(PathToDelete, function (err) {
-          if (err) {console.log('Dont Have File in folder')}
-        });
+      const GetByID = await controllers.serviceUs.GetbyID(ID);
+      // Delete File
+      if(GetByID.serviceUs_img != null && GetByID.serviceUs_img != "") {
+        const PathToDelete = __basedir + "/public/photo/serviceUs/" + GetByID.serviceUs_img
+        fs.unlink(PathToDelete, (err) => { if(err){ console.log(err) } })
       }
-
       const result = await controllers.serviceUs.Delete(ID);
       if (result.affectedRows > 0) {
         http.response(res, 200, true, "Deleted successful");
