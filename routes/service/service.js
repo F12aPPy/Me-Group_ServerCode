@@ -185,7 +185,7 @@ router
       http.response(res, 500, false, "Internal server error");
     }
   })
-  .post(authorization, async (req, res, next) => {
+  .post( async (req, res, next) => {
     try {
       if (!req.files) {
         const Creating = await controllers.services.Insert(req.body);
@@ -316,13 +316,13 @@ router
 
 router
   .route("/services/image/:id")
-  .put(authorization, async (req, res, next) => {
+  .put( async (req, res, next) => {
     try {
         const ID = req.params.id;
         const fixResult = await controllers.services.GetbyID(ID);
         const file = req.files.service_img;
-        const fileName = uuidv4 + file.name;
-        if(fixResult.service_img === null || fixResult.service_img === "") {
+        const fileName = uuidv4() + file.name;
+        if(fixResult.service_img == null || fixResult.service_img == "") {
           // Save Static Image
         uploadPath = __basedir + "/public/photo/services/" + fileName;
         file.mv(uploadPath, function (err) {
@@ -348,8 +348,10 @@ router
           }
         });
         }
-        const service_img = fileName;
-        const result = await controllers.services.Update(service_img, ID);
+        const Image = {
+          service_img: fileName
+        }
+        const result = await controllers.services.Update(Image, ID);
         if (result.affectedRows > 0) {
           http.response(res, 201, true, "Update successful");
         } else {
