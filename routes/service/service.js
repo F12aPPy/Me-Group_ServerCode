@@ -185,7 +185,7 @@ router
       http.response(res, 500, false, "Internal server error");
     }
   })
-  .post( async (req, res, next) => {
+  .post(authorization, async (req, res, next) => {
     try {
       if (!req.files) {
         const Creating = await controllers.services.Insert(req.body);
@@ -226,7 +226,7 @@ router
 
 router
   .route("/services/:id")
-  .put(async (req, res, next) => {
+  .put(authorization, async (req, res, next) => {
     try {
       // Setting
       const ID = req.params.id;
@@ -316,19 +316,16 @@ router
 
 router
   .route("/services/image/:id")
-  .put(authorization,async (req, res, next) => {
+  .put(authorization, async (req, res, next) => {
     try {
-      const ID = req.params.id;
-
+        const ID = req.params.id;
         const fixResult = await controllers.services.GetbyID(ID);
         const file = req.files.service_img;
-
+        const fileName = uuidv4 + file.name;
         if(fixResult.service_img === null || fixResult.service_img === "") {
           // Save Static Image
-        sampleFile = file;
-        uploadPath = __basedir + "/public/photo/services/" + fixResult.service_name + ',' + sampleFile.name;
-
-        sampleFile.mv(uploadPath, function (err) {
+        uploadPath = __basedir + "/public/photo/services/" + fileName;
+        file.mv(uploadPath, function (err) {
           if (err) {
             http.response(res, 500, false, err);
           } else {
@@ -336,33 +333,23 @@ router
           }
         });
         } else {
-
           // Delete Static Image
-          const PathToDelete =
-          __basedir + "/public/photo/services/" + fixResult.service_name + ',' + fixResult.service_img;
+          const PathToDelete = __basedir + "/public/photo/services/" + fixResult.service_img;
         fs.unlink(PathToDelete, function (err) {
           if (err) {console.log('Dont Have File in folder')}
         });
-
         // Save Static Image
-        sampleFile = file;
-        uploadPath = __basedir + "/public/photo/services/" + fixResult.service_name + ',' + sampleFile.name;
-
-        sampleFile.mv(uploadPath, function (err) {
+        uploadPath = __basedir + "/public/photo/services/" + fileName;
+        file.mv(uploadPath, function (err) {
           if (err) {
             http.response(res, 500, false, err);
           } else {
             console.log("File Was Uploaded");
           }
         });
-
         }
-
-        // Put Data In Database
-        const ImgName = {
-          service_img: file.name,
-        };
-        const result = await controllers.services.Update(ImgName, ID);
+        const service_img = fileName;
+        const result = await controllers.services.Update(service_img, ID);
         if (result.affectedRows > 0) {
           http.response(res, 201, true, "Update successful");
         } else {
